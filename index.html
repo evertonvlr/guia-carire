@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Interativo de Cariré - Guia Completo para Concurso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Sertão Sereno -->
+    <!-- Application Structure Plan: A single-page dashboard structure with a sticky top navigation bar for smooth scrolling to thematic sections. This architecture was chosen to break down the dense report into digestible, non-linear modules (Overview, History, Geography, Government, Economy, Culture), allowing users to explore topics of interest in any order. Key interactions include an interactive timeline for the complex emancipation history and a dynamic chart for the economy, enhancing user engagement and comprehension over a static text format. -->
+    <!-- Visualization & Content Choices: 
+        - Emancipation History: Report Info -> Complex timeline of laws and dates. Goal -> Show change over time. Viz -> Interactive vertical timeline (HTML/CSS/JS). Interaction -> Click to reveal details. Justification -> Simplifies a complex narrative. Method -> Custom JS.
+        - PIB Composition: Report Info -> Percentage breakdown of economic sectors. Goal -> Compare proportions. Viz -> Doughnut Chart. Interaction -> Hover for tooltips. Justification -> Instantly shows the public sector's dominance. Library -> Chart.js.
+        - Key Stats: Report Info -> Population, Area, Foundation, IDHM. Goal -> Inform quickly. Viz -> Key metric cards (HTML/Tailwind). Interaction -> None. Justification -> Provides an immediate high-level summary.
+        - Government Structure: Report Info -> Mayor, Chamber composition, addresses. Goal -> Organize power structure. Viz -> Styled info cards (HTML/Tailwind). Interaction -> None. Justification -> Clear, organized presentation.
+        - Geography: Report Info -> List of neighbors, coordinates, climate. Goal -> Organize spatial data. Viz -> Diagram and info lists. Interaction -> None. Justification -> More intuitive than a text list.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F2;
+            color: #3D352E;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #8C6A5D;
+            border-bottom-color: #8C6A5D;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .timeline-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .timeline-item.active .timeline-item-content {
+            max-height: 500px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-[#3D352E]">Guia de Cariré</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#visao-geral" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Visão Geral</a>
+                        <a href="#historia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">História</a>
+                        <a href="#geografia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Geografia</a>
+                        <a href="#governo" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Governo</a>
+                        <a href="#economia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Economia</a>
+                        <a href="#cultura" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Cultura</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="visao-geral" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">Conheça Cariré</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">Uma visão geral dos dados e fatos mais importantes sobre o município, desde sua fundação e população até sua localização e desenvolvimento humano no sertão cearense.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 text-center">
+                    <div class="card-content">
+                        <div class="text-4xl mb-2">📜</div>
+                        <h3 class="font-bold text-lg">Fundação</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">16/09/1929</p>
+                        <p class="text-sm text-gray-500">(Primeira Emancipação)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="card-content">
+                        <div class="text-4xl mb-2">👥</div>
+                        <h3 class="font-bold text-lg">População</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">18.075</p>
+                        <p class="text-sm text-gray-500">(Estimativa 2024)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="card-content">
+                        <div class="text-4xl mb-2">🏞️</div>
+                        <h3 class="font-bold text-lg">Área Territorial</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">756,9 km²</p>
+                        <p class="text-sm text-gray-500">(IBGE)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="card-content">
+                        <div class="text-4xl mb-2">📈</div>
+                        <h3 class="font-bold text-lg">IDHM</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">0,596</p>
+                        <p class="text-sm text-gray-500">(Médio - 2010)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historia" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">Uma História de Luta e Autonomia</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A trajetória de Cariré, desde suas origens em terras indígenas até se tornar um município autônomo, foi marcada por avanços e recuos. Explore os marcos decisivos abaixo.</p>
+            
+            <div class="card p-6 mb-8">
+                <h3 class="font-bold text-xl mb-4">Origens e Toponímia</h3>
+                <p class="text-gray-700 mb-4">As terras que hoje formam Cariré eram originalmente habitadas por povos como os <strong>Tupinambás</strong> e <strong>Areriús</strong>. O nome "Cariré" tem origem Tupi-Guarani, com duas interpretações principais:</p>
+                 <details class="bg-gray-50 rounded-lg p-4">
+                    <summary class="font-medium text-[#8C6A5D]">Ver interpretações do nome... <span class="text-sm">(clique para expandir)</span></summary>
+                    <ul class="mt-3 space-y-2 text-sm text-gray-600 border-t pt-3">
+                        <li><strong>1. Peixe Diferente:</strong> Junção de `CARI` (peixe cascudo) com `RÉ` (diferente), significando "pseudo-cari".</li>
+                        <li><strong>2. Depois da Queimada:</strong> Combinação de `CAI` (queimada) com `RIRÉ` (depois), significando "terra que fica depois da zona da mata".</li>
+                    </ul>
+                </details>
+            </div>
+
+            <div class="relative w-full max-w-4xl mx-auto">
+                <div class="absolute left-1/2 h-full w-1 bg-gray-300 transform -translate-x-1/2"></div>
+                <div id="timeline-container" class="space-y-12">
+                </div>
+            </div>
+        </section>
+
+        <section id="geografia" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">A Paisagem do Sertão</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade de Cariré é profundamente moldada por sua geografia. Inserido no semiárido cearense, o município possui características únicas de clima, relevo e hidrografia, que definem o modo de vida e a cultura local.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">Ficha Geográfica</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Clima:</span><span>Tropical Quente Semiárido (BSh)</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Vegetação:</span><span>Caatinga Arbustiva e Floresta Caducifólia Espinhosa</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Bacia Hidrográfica:</span><span>Rio Acaraú</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Relevo:</span><span>Depressão Sertaneja</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Altitude:</span><span>149 metros</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Coordenadas:</span><span>3°57'03" S, 40°28'22" O</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4 text-center">Municípios Limítrofes</h3>
+                        <div class="grid grid-cols-3 grid-rows-3 gap-2 text-center font-medium h-full">
+                            <div class="col-start-2 row-start-1 p-2 bg-gray-100 rounded flex items-center justify-center">Sobral</div>
+                            <div class="col-start-1 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Mucambo & Pacujá</div>
+                            <div class="col-start-2 row-start-2 p-3 bg-[#8C6A5D] text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">CARIRÉ</div>
+                            <div class="col-start-3 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Groaíras & Santa Quitéria</div>
+                            <div class="col-start-2 row-start-3 p-2 bg-gray-100 rounded flex items-center justify-center">Reriutaba & Varjota</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">Divisão Administrativa</h3>
+                        <p class="text-gray-700 mb-4">O município é dividido em 5 distritos, que auxiliam na gestão do vasto território.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cariré (Sede)</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Arariús</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cacimbas</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Jucá</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Tapuio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="governo" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">Estrutura de Governo</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos, conforme define a <strong>Lei Orgânica nº 01/2012</strong>, promulgada em 10 de Dezembro de 2012.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">🏛️ Poder Executivo</h3>
+                        <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm font-medium text-gray-500">Prefeito (2025-2028)</p>
+                            <p class="text-lg font-bold">Antonio Rufino Martins (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Sede</p>
+                            <p class="text-md">Praça Elísio Aguiar, nº 141, Centro</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">⚖️ Poder Legislativo</h3>
+                        <p class="text-gray-600 mb-4">Exercido pela Câmara Municipal, que cria leis e fiscaliza o executivo.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm font-medium text-gray-500">Composição</p>
+                            <p class="text-lg font-bold">11 Vereadores</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2025)</p>
+                            <p class="text-md font-semibold">Luciana Miranda (PDT)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="economia" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">Pilares da Economia Local</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A economia de Cariré é sustentada principalmente pela administração pública e pela agropecuária. O gráfico abaixo ilustra a composição do Produto Interno Bruto (PIB), revelando o peso de cada setor na geração de riqueza do município.</p>
+            <div class="card p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="font-bold text-xl mb-4">Composição do PIB de Cariré</h3>
+                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões) mostra que a administração pública é o principal motor econômico, seguida pela agropecuária, a base do setor privado.</p>
+                        <div class="space-y-3">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500">PIB per capita (2021)</p>
+                                <p class="text-2xl font-bold text-[#8C6A5D]">R$ 10.455,04</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500">Principal Atividade Privada</p>
+                                <p class="text-2xl font-bold text-[#8C6A5D]">Agropecuária</p>
+                                <p class="text-xs text-gray-500">Bovinos, Caprinos, Milho, Feijão</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="pibChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cultura" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-2 text-center">Cultura, Fé e Tradição</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade carireense é expressa em suas festas, em seu patrimônio histórico e em seu artesanato. Conheça os símbolos e as manifestações que mantêm viva a alma do município.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">🎉 Principais Festas</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li><strong>Festa de Santo Antônio:</strong> De 3 a 13 de Junho, a maior celebração religiosa, com novenas e quermesses.</li>
+                            <li><strong>Semana do Município:</strong> Em torno de 16 de Setembro, comemora a emancipação com desfiles cívicos e shows.</li>
+                            <li><strong>Cariré Junino:</strong> Importante festival de quadrilhas que valoriza as tradições nordestinas.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">🏛️ Patrimônio e Símbolos</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li><strong>Igreja Matriz de Santo Antônio:</strong> De 1956, marco da cidade com sua torre de 31m.</li>
+                            <li><strong>Museu Euclides Rufino:</strong> Acervo com mais de 8 mil peças da história local.</li>
+                             <li><strong>Artesanato:</strong> Riqueza em trabalhos com palha, crochê e redes artesanais.</li>
+                            <li><strong>Bandeira:</strong> Faixas verticais em azul e branco, com o brasão de armas ao centro.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">🎵 Hino Municipal</h3>
+                        <details>
+                            <summary class="text-gray-600 italic">"Em planície de brancas areias..." <span class="text-sm font-medium text-[#8C6A5D]">(clique para ler)</span></summary>
+                            <blockquote class="mt-4 border-l-4 border-[#8C6A5D] pl-4 text-sm text-gray-600 space-y-2">
+                                <p>"Em planície de brancas areias,<br>neste ardente sertão nordestino,<br>Por um belo porvir tu anseias,<br>Cariré, tens um nobre destino."</p>
+                                <p class="font-bold">ESTRIBILHO:<br>"Cariré, nossa terra querida,<br>De teus filhos recebe o louvor.<br>São acordes, impulso de vida<br>Sinfonia, civismo e amor."</p>
+                                <p>"De firmeza são marco: teus passos,<br>do progresso fecunda semente;<br>Alargando da vida os espaços,<br>está sempre o teu filho presente."</p>
+                                <p>"Tantos vultos ilustres geraste.<br>Em teu seio fermento de vida;<br>P'ra vitória teu povo guiaste.<br>Cariré, nossa terra querida."</p>
+                                <p>"Para longe de nós o torpor,<br>que impede o raiar da vitória.<br>De tua gente terás o amor,<br>fulgurante será tua história."</p>
+                            </blockquote>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-white mt-12">
+        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>Painel Interativo desenvolvido para fins de estudo e visualização de dados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineData = [
+                {
+                    year: '1893',
+                    title: 'Chegada da Ferrovia',
+                    description: 'A inauguração da estação ferroviária em <strong>1 de novembro</strong>, pela Rede de Viação Cearense, é o marco zero da fundação do núcleo urbano de Cariré.',
+                    icon: '🚂'
+                },
+                {
+                    year: '1911',
+                    title: 'Criação do Distrito',
+                    description: 'Cariré é oficialmente reconhecido na divisão administrativa do Brasil, mas ainda como um distrito subordinado ao município de Sobral.',
+                    icon: '🗺️'
+                },
+                {
+                    year: '1929',
+                    title: 'Primeira Emancipação',
+                    description: 'Pela <strong>Lei Estadual nº 2.704</strong> de 16 de setembro, Cariré é elevado à categoria de vila e se torna um município autônomo. Esta data é celebrada hoje como o aniversário da cidade.',
+                    icon: '⭐'
+                },
+                {
+                    year: '1931',
+                    title: 'Município Extinto',
+                    description: 'Pelo <strong>Decreto Estadual nº 193</strong> de 20 de maio, o município é extinto e seu território é reanexado a Sobral, num período de centralização de poder no país.',
+                    icon: '🔙'
+                },
+                {
+                    year: '1935',
+                    title: 'Restauração Definitiva',
+                    description: 'A autonomia é finalmente reconquistada pelo <strong>Decreto Estadual nº 157</strong> de 23 de setembro. A instalação formal do município restaurado ocorre em 20 de outubro do mesmo ano.',
+                    icon: '🏛️'
+                }
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineData.forEach((item, index) => {
+                const isLeft = index % 2 === 0;
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`;
+                timelineItem.innerHTML = `
+                    <div class="w-5/12">
+                        <div class="card p-4 cursor-pointer">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg">${item.title}</h4>
+                                <div class="text-xl">${item.icon}</div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="text-sm text-gray-600 mt-2">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#8C6A5D] rounded-full flex items-center justify-center text-white font-bold shadow-md text-sm">${item.year}</div>
+                `;
+                timelineContainer.appendChild(timelineItem);
+            });
+
+            document.querySelectorAll('.timeline-item .card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const parentItem = card.closest('.timeline-item');
+                    parentItem.classList.toggle('active');
+                });
+            });
+
+            const pibData = {
+                labels: ['Admin. Pública', 'Agropecuária', 'Serviços (privados)', 'Indústria'],
+                datasets: [{
+                    label: 'Composição do PIB (%)',
+                    data: [43.3, 29.4, 22.9, 4.4],
+                    backgroundColor: [
+                        '#8C6A5D',
+                        '#A1B497',
+                        '#DDC9B4',
+                        '#B0A8B9'
+                    ],
+                    borderColor: '#F8F5F2',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+
+            const pibConfig = {
+                type: 'doughnut',
+                data: pibData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                },
+                                color: '#3D352E',
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            };
+            
+            const pibChartCtx = document.getElementById('pibChart').getContext('2d');
+            new Chart(pibChartCtx, pibConfig);
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').includes(entry.target.id)) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>

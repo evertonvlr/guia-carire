@@ -13,10 +13,9 @@
     <!-- Application Structure Plan: A single-page dashboard structure with a sticky top navigation bar for smooth scrolling to thematic sections. This architecture was chosen to break down the dense report into digestible, non-linear modules (Overview, History, Geography, Government, Economy, Culture), allowing users to explore topics of interest in any order. Key interactions include an interactive timeline for the complex emancipation history and a dynamic chart for the economy, enhancing user engagement and comprehension over a static text format. -->
     <!-- Visualization & Content Choices: 
         - Emancipation History: Report Info -> Complex timeline of laws and dates. Goal -> Show change over time. Viz -> Interactive vertical timeline (HTML/CSS/JS). Interaction -> Click to reveal details. Justification -> Simplifies a complex narrative. Method -> Custom JS.
+        - Mayors Chronology: Report Info -> List of mayors. Goal -> Organize historical data. Viz -> Collapsible list. Interaction -> Click to expand. Justification -> Presents extensive data without cluttering the page.
         - PIB Composition: Report Info -> Percentage breakdown of economic sectors. Goal -> Compare proportions. Viz -> Doughnut Chart. Interaction -> Hover for tooltips. Justification -> Instantly shows the public sector's dominance. Library -> Chart.js.
-        - Key Stats: Report Info -> Population, Area, Foundation, IDHM. Goal -> Inform quickly. Viz -> Key metric cards (HTML/Tailwind). Interaction -> None. Justification -> Provides an immediate high-level summary.
         - Government Structure: Report Info -> Mayor, Chamber composition, addresses. Goal -> Organize power structure. Viz -> Styled info cards (HTML/Tailwind). Interaction -> None. Justification -> Clear, organized presentation.
-        - Geography: Report Info -> List of neighbors, coordinates, climate. Goal -> Organize spatial data. Viz -> Diagram and info lists. Interaction -> None. Justification -> More intuitive than a text list.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -72,6 +71,13 @@
         }
         details > summary::-webkit-details-marker {
             display: none;
+        }
+        details[open] summary ~ * {
+            animation: sweep .5s ease-in-out;
+        }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-10px)}
+            100%  {opacity: 1; transform: translateY(0)}
         }
         @media (min-width: 768px) {
             .chart-container {
@@ -214,17 +220,17 @@
 
         <section id="governo" class="mb-16 scroll-mt-24">
             <h2 class="text-3xl font-bold mb-2 text-center">Estrutura de Governo</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos, conforme define a <strong>Lei Orgânica nº 01/2012</strong>, promulgada em 10 de Dezembro de 2012.</p>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos, conforme define a <strong>Lei Orgânica nº 01/2012</strong>.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                 <div class="card p-6">
                     <div class="card-content">
                         <h3 class="font-bold text-xl mb-4">🏛️ Poder Executivo</h3>
                         <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade.</p>
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm font-medium text-gray-500">Prefeito (2025-2028)</p>
-                            <p class="text-lg font-bold">Antonio Rufino Martins (PDT)</p>
-                            <p class="text-sm font-medium text-gray-500 mt-2">Sede</p>
-                            <p class="text-md">Praça Elísio Aguiar, nº 141, Centro</p>
+                            <p class="text-sm font-medium text-gray-500">Prefeito (2021-2024)</p>
+                            <p class="text-lg font-bold">Antônio Martins (PDT)</p>
+                             <p class="text-sm font-medium text-gray-500 mt-2">Vice-Prefeito</p>
+                            <p class="text-lg font-bold">Fábio da Farmácia (PDT)</p>
                         </div>
                     </div>
                 </div>
@@ -235,11 +241,42 @@
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <p class="text-sm font-medium text-gray-500">Composição</p>
                             <p class="text-lg font-bold">11 Vereadores</p>
-                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2025)</p>
-                            <p class="text-md font-semibold">Luciana Miranda (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2023-2024)</p>
+                            <p class="text-md font-semibold">Nery (PDT)</p>
                         </div>
                     </div>
                 </div>
+            </div>
+             <div class="card p-6 mt-8">
+                <details>
+                    <summary class="font-bold text-xl">Cronologia de Prefeitos <span class="text-sm font-medium text-[#8C6A5D]">(clique para ver a lista)</span></summary>
+                    <div class="mt-4 pt-4 border-t">
+                        <ul class="space-y-2 text-gray-700 text-sm columns-1 md:columns-2 lg:columns-3">
+                            <li><strong>Elísio Aguiar</strong> (1935-1945)</li>
+                            <li><strong>José Teles de Andrade</strong> (1945)</li>
+                            <li><strong>Otacílio de Azevedo</strong> (1945-1947)</li>
+                            <li><strong>José Teles de Andrade</strong> (1947-1951)</li>
+                            <li><strong>Francisco de Assis Pires</strong> (1951-1955)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1955-1959)</li>
+                            <li><strong>José Veras de Araújo</strong> (1959-1963)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1963-1967)</li>
+                            <li><strong>José Veras de Araújo</strong> (1967-1971)</li>
+                            <li><strong>Francisco de Assis Pires</strong> (1971-1973)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1973-1977)</li>
+                            <li><strong>José Veras de Araújo</strong> (1977-1983)</li>
+                            <li><strong>Antônio de Assis Pires</strong> (1983-1988)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (1989-1992)</li>
+                            <li><strong>Antônio de Assis Pires</strong> (1993-1996)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (1997-2000)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (2001-2004)</li>
+                            <li><strong>Antônio Rufino Martins</strong> (2005-2008)</li>
+                            <li><strong>Antônio Rufino Martins</strong> (2009-2012)</li>
+                            <li><strong>Elmo Aguiar</strong> (2013-2016)</li>
+                            <li><strong>Elmo Aguiar</strong> (2017-2020)</li>
+                            <li><strong>Antônio Martins</strong> (2021-2024)</li>
+                        </ul>
+                    </div>
+                </details>
             </div>
         </section>
 
@@ -250,7 +287,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
                         <h3 class="font-bold text-xl mb-4">Composição do PIB de Cariré</h3>
-                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões) mostra que a administração pública é o principal motor econômico, seguida pela agropecuária, a base do setor privado.</p>
+                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões em 2021) mostra que a administração pública é o principal motor econômico, seguida pela agropecuária, a base do setor privado.</p>
                         <div class="space-y-3">
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <p class="text-sm font-medium text-gray-500">PIB per capita (2021)</p>
@@ -298,6 +335,10 @@
                 <div class="card p-6">
                     <div class="card-content">
                         <h3 class="font-bold text-xl mb-4">🎵 Hino Municipal</h3>
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600"><strong>Letra:</strong> Valdelice de Castro Carneiro</p>
+                            <p class="text-sm text-gray-600"><strong>Música:</strong> Maestro Zezinho</p>
+                        </div>
                         <details>
                             <summary class="text-gray-600 italic">"Em planície de brancas areias..." <span class="text-sm font-medium text-[#8C6A5D]">(clique para ler)</span></summary>
                             <blockquote class="mt-4 border-l-4 border-[#8C6A5D] pl-4 text-sm text-gray-600 space-y-2">

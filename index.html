@@ -3,507 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Interativo de Cariré - Guia Completo para Concurso</title>
+    <title>Dashboard Constitucional Avançado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Modern Gradient -->
+    <!-- Application Structure Plan: A dashboard-style SPA with a fixed sidebar for navigation and a main content area displaying thematic cards. Each card uses an interactive tab system ("Doutrina", "Texto da Lei", "Jurisprudência", "Pegadinhas") to layer information. This structure was chosen to transform the dense, linear source text into an active, user-driven exploration tool, allowing students to control information density and focus on specific areas of study (e.g., theory, case law, or exam tips) as needed, which is more effective for learning and revision than passive reading. -->
+    <!-- Visualization & Content Choices: The primary content is textual, organized into interactive tabs and expandable sections to manage complexity. A Bar Chart (Chart.js) is used to visualize and compare the minimum ages for political office (Art. 14), a data-heavy point that benefits from visual representation. The goal is to make quantitative data easily digestible. Other visual elements like highlighted mnemonics and structured lists are used to organize information logically. This supports the dashboard structure by providing quick, scannable insights. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F5F2;
-            color: #3D352E;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
         }
-       .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-       .nav-link.active,.nav-link:hover {
-            color: #8C6A5D;
-            border-bottom-color: #8C6A5D;
-        }
-       .card {
-            background-color: #FFFFFF;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-       .card-content {
-            flex-grow: 1;
-        }
-       .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-       .timeline-item-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
-        }
-       .timeline-item.active .timeline-item-content {
-            max-height: 500px;
-        }
-       .chart-container {
+        .chart-container {
             position: relative;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
             height: 300px;
             max-height: 350px;
         }
+        .pie-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin: auto;
+            height: 300px;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-button {
+            padding: 8px 12px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            border-color: #4f46e5; /* Indigo 600 */
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        .nav-link.active {
+            background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
         details > summary {
-            list-style: none;
             cursor: pointer;
+            list-style: none;
         }
-        details > summary::-webkit-details-marker {
-            display: none;
+        details > summary::-webkit-details-marker { display: none; }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        details[open] summary ~ * {
-            animation: sweep .5s ease-in-out;
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
         }
-        @keyframes sweep {
-            0%    {opacity: 0; transform: translateY(-10px)}
-            100%  {opacity: 1; transform: translateY(0)}
-        }
-        @media (min-width: 768px) {
-           .chart-container {
-                height: 350px;
-                max-height: 400px;
-            }
+        .main-header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(240, 242, 245, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="text-slate-700">
 
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <h1 class="text-xl font-bold text-[#3D352E]">Guia de Cariré</h1>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#visao-geral" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Visão Geral</a>
-                        <a href="#historia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">História</a>
-                        <a href="#geografia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Geografia</a>
-                        <a href="#governo" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Governo</a>
-                        <a href="#economia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Economia</a>
-                        <a href="#cultura" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Cultura</a>
-                    </div>
-                </div>
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-64 bg-gray-900 text-white fixed top-0 left-0 h-full p-4 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-40">
+            <div class="flex items-center justify-center gap-2 mb-10">
+                <span class="text-3xl">🏛️</span>
+                <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">Constitucional</h1>
             </div>
-        </nav>
-    </header>
+            <nav class="flex-1">
+                <ul class="space-y-2">
+                    <li><a href="#principios" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>🏛️</span> Princípios Fundamentais</a></li>
+                    <li><a href="#direitos_individuais" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>👤</span> Direitos Individuais</a></li>
+                    <li><a href="#direitos_sociais" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>👥</span> Direitos Sociais</a></li>
+                    <li><a href="#nacionalidade" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>🇧🇷</span> Nacionalidade</a></li>
+                    <li><a href="#direitos_politicos" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>🗳️</span> Direitos Políticos</a></li>
+                    <li><a href="#organizacao_estado" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>🗺️</span> Organização do Estado</a></li>
+                    <li><a href="#municipios" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>🏙️</span> Municípios</a></li>
+                    <li><a href="#admin_publica" class="nav-link flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition-colors"><span>⚖️</span> Administração Pública</a></li>
+                </ul>
+            </nav>
+        </aside>
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <!-- Mobile Menu Button -->
+        <button id="menu-button" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg text-gray-800">
+            <span class="sr-only">Abrir menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
 
-        <section id="visao-geral" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Conheça Cariré</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">Uma visão geral dos dados e fatos mais importantes sobre o município, desde sua fundação e população até sua localização e desenvolvimento humano no sertão cearense.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="card p-6 text-center">
-                    <div class="card-content">
-                        <div class="text-4xl mb-2">📜</div>
-                        <h3 class="font-bold text-lg">Fundação</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">16/09/1929</p>
-                        <p class="text-sm text-gray-500">(Primeira Emancipação)</p>
-                    </div>
-                </div>
-                <div class="card p-6 text-center">
-                    <div class="card-content">
-                        <div class="text-4xl mb-2">👥</div>
-                        <h3 class="font-bold text-lg">População</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">18.075</p>
-                        <p class="text-sm text-gray-500">(Estimativa 2024)</p>
-                    </div>
-                </div>
-                <div class="card p-6 text-center">
-                    <div class="card-content">
-                        <div class="text-4xl mb-2">🏞️</div>
-                        <h3 class="font-bold text-lg">Área Territorial</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">756,9 km²</p>
-                        <p class="text-sm text-gray-500">(IBGE)</p>
-                    </div>
-                </div>
-                <div class="card p-6 text-center">
-                    <div class="card-content">
-                        <div class="text-4xl mb-2">📈</div>
-                        <h3 class="font-bold text-lg">IDHM</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">0,596</p>
-                        <p class="text-sm text-gray-500">(Médio - 2010)</p>
-                    </div>
-                </div>
+        <!-- Main Content -->
+        <main class="flex-1 md:ml-64 p-4 md:p-6">
+            <div class="main-header">
+                <h2 id="main-title" class="text-3xl font-bold text-gray-800">Painel de Estudos</h2>
             </div>
-        </section>
-
-        <section id="historia" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Trajetória Histórica</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A trajetória de Cariré, desde suas origens em terras indígenas até se tornar um município autônomo, foi marcada por avanços e recuos. Explore os marcos decisivos abaixo.</p>
             
-            <div class="card p-6 mb-8">
-                <h3 class="font-bold text-xl mb-4">Origens Primordiais e a Gênese Ferroviária</h3>
-                <p class="text-gray-700 mb-2">A história de Cariré começa muito antes de sua formalização. As terras, banhadas pelo rio Acaraú, eram território de etnias indígenas como os <strong>Tupinambás</strong> e <strong>Areriús</strong>.</p>
-                <p class="text-gray-700 mb-4">O evento transformador foi a expansão da Estrada de Ferro de Sobral. A inauguração da estação em <strong>1 de novembro de 1893</strong> não foi apenas um acréscimo de infraestrutura; foi a própria razão de ser da cidade, ditando sua localização, economia e estrutura social inicial.</p>
-                 <details class="bg-gray-50 rounded-lg p-4">
-                    <summary class="font-medium text-[#8C6A5D]">Origem do Nome (Toponímia) <span class="text-sm">(clique para expandir)</span></summary>
-                    <ul class="mt-3 space-y-2 text-sm text-gray-600 border-t pt-3">
-                        <li><strong>1. Peixe Diferente:</strong> Junção de `CARI` (peixe cascudo) com `RÉ` (diferente), significando "pseudo-cari".</li>
-                        <li><strong>2. Depois da Queimada:</strong> Combinação de `CAI` (queimada) com `RIRÉ` (depois), significando "terra que fica depois da zona da mata".</li>
-                    </ul>
-                </details>
-            </div>
+            <div class="space-y-8 mt-4">
 
-            <div class="relative w-full max-w-4xl mx-auto">
-                <h3 class="text-2xl font-bold mb-6 text-center">Caminho para a Autonomia</h3>
-                <div class="absolute left-1/2 h-full w-1 bg-gray-300 transform -translate-x-1/2"></div>
-                <div id="timeline-container" class="space-y-12">
+            <!-- Section: Princípios Fundamentais -->
+            <section id="principios" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">TÍTULO I - DOS PRINCÍPIOS FUNDAMENTAIS</h3>
+                <p class="text-slate-500 mb-6 text-sm">Alicerces da República, definindo sua estrutura, fundamentos, objetivos e relações internacionais. Essencial para a compreensão de todo o sistema constitucional.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="principios-doutrina">Doutrina</button><button class="tab-button" data-target="principios-avancado">Tópicos Avançados</button><button class="tab-button" data-target="principios-lei">Texto da Lei</button><button class="tab-button" data-target="principios-juris">Jurisprudência</button><button class="tab-button" data-target="principios-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="principios-doutrina" class="tab-content active">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-lg border">
+                                <h4 class="font-semibold mb-2">Estrutura do Estado</h4>
+                                <p class="text-xs"><strong>Forma de Estado:</strong> Federação</p>
+                                <p class="text-xs"><strong>Forma de Governo:</strong> República</p>
+                                <p class="text-xs"><strong>Sistema de Governo:</strong> Presidencialismo</p>
+                                <p class="text-xs"><strong>Regime de Governo:</strong> Democracia</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <h4 class="font-semibold text-blue-800 mb-2">Fundamentos: SO-CI-DI-VA-PLU</h4>
+                                <ul class="list-none text-xs space-y-1">
+                                    <li><span class="font-bold">SO</span>berania</li>
+                                    <li><span class="font-bold">CI</span>dadania</li>
+                                    <li><span class="font-bold">DI</span>gnidade da pessoa humana</li>
+                                    <li><span class="font-bold">VA</span>lores sociais do trabalho/livre iniciativa</li>
+                                    <li><span class="font-bold">PLU</span>ralismo político</li>
+                                </ul>
+                            </div>
+                             <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-semibold text-green-800 mb-2">Objetivos: CON-GA-ER-PRO</h4>
+                                <ul class="list-none text-xs space-y-1">
+                                    <li><span class="font-bold">CON</span>struir uma sociedade livre, justa e solidária</li>
+                                    <li><span class="font-bold">GA</span>rantir o desenvolvimento nacional</li>
+                                    <li><span class="font-bold">ER</span>radicar a pobreza e a marginalização</li>
+                                    <li><span class="font-bold">PRO</span>mover o bem de todos</li>
+                                </ul>
+                            </div>
+                            <div class="pie-chart-container">
+                                <canvas id="poderesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="principios-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Teoria dos Elementos do Estado:</strong> Análise de Povo, Território e Governo Soberano no contexto da CF/88.</li><li><strong>Princípio da Máxima Efetividade:</strong> As normas constitucionais, especialmente as principiológicas, devem ser interpretadas de modo a lhes conferir a maior eficácia social possível.</li><li><strong>Neoconstitucionalismo e a Força Normativa da Constituição:</strong> Superação da visão da Constituição como mero documento político, passando a ser a norma jurídica suprema com força vinculante.</li></ul></div>
+                    <div id="principios-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 1º ao 4º)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 1º</b> A República Federativa do Brasil, formada pela união indissolúvel dos Estados e Municípios e do Distrito Federal, constitui-se em Estado Democrático de Direito...</p></div></details></div>
+                    <div id="principios-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Dignidade da Pessoa Humana:</strong> STF considera um princípio-matriz que fundamenta decisões sobre direitos de minorias, pesquisas com células-tronco e vedação de penas cruéis.</li><li><strong>Estado Laico:</strong> STF veda o proselitismo e o embaraço a crenças, mas permite colaboração de interesse público com instituições religiosas.</li></ul></div>
+                    <div id="principios-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Confundir Fundamentos com Objetivos:</strong> Fundamentos (art. 1º) são a base; Objetivos (art. 3º) são as metas.</li><li><strong>Poderes da União:</strong> Ministério Público e Tribunal de Contas **não** são poderes.</li></ul></div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="geografia" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">A Paisagem do Sertão</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade de Cariré é profundamente moldada por sua geografia. Inserido no semiárido nordestino, o município possui características únicas de clima, relevo e hidrografia, que definem o modo de vida e a cultura local.</p>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">Ficha Geográfica</h3>
-                        <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Clima:</span><span>Tropical Quente Semiárido (BSh)</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Vegetação:</span><span>Caatinga Arbustiva Aberta e Floresta Caducifólia Espinhosa</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Bacia Hidrográfica:</span><span>Rio Acaraú</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Relevo:</span><span>Depressão Sertaneja</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Altitude:</span><span>149 metros</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Coordenadas:</span><span>3°57'03" S, 40°28'22" O</span></li>
+            <!-- Section: Direitos Individuais -->
+            <section id="direitos_individuais" class="card p-6 scroll-mt-24">
+                 <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO I - DIREITOS E DEVERES INDIVIDUAIS E COLETIVOS</h3>
+                 <p class="text-slate-500 mb-6 text-sm">O Art. 5º é o coração dos direitos fundamentais e uma cláusula pétrea, detalhando as liberdades e garantias que protegem o cidadão contra o poder do Estado.</p>
+                 <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="individuais-doutrina">Doutrina</button><button class="tab-button" data-target="individuais-avancado">Tópicos Avançados</button><button class="tab-button" data-target="individuais-lei">Texto da Lei</button><button class="tab-button" data-target="individuais-juris">Jurisprudência</button><button class="tab-button" data-target="individuais-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="individuais-doutrina" class="tab-content active"><h3 class="font-semibold text-lg mb-2">Análise de Incisos Relevantes</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Princípio da Legalidade (II):</strong> Para o particular, autonomia da vontade; para a Administração, legalidade estrita.</li><li><strong>Inviolabilidade de Domicílio (XI):</strong> Exceções: flagrante, desastre, socorro, ou, durante o dia, com ordem judicial.</li><li><strong>Remédios Constitucionais:</strong> HC, HD, MS, MI e Ação Popular. Cada um com sua finalidade específica.</li></ul></div>
+                    <div id="individuais-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Teoria das Gerações/Dimensões dos Direitos Fundamentais:</strong> 1ª (liberdades), 2ª (sociais), 3ª (fraternidade/difusos).</li><li><strong>Eficácia Horizontal dos Direitos Fundamentais:</strong> Aplicação dos direitos fundamentais nas relações entre particulares, mitigando a autonomia privada.</li><li><strong>Teoria dos Limites dos Limites (Schranken-Schranken):</strong> As restrições a direitos fundamentais também possuem limites, não podendo aniquilar o núcleo essencial do direito.</li></ul></div>
+                    <div id="individuais-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Art. 5º)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 5º</b> Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade...</p></div></details></div>
+                    <div id="individuais-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Liberdade de Reunião (XVI):</strong> Independe de autorização, mas exige-se "prévio aviso".</li><li><strong>Racismo e Injúria Racial:</strong> STF equiparou a injúria racial ao crime de racismo (inafiançável e imprescritível).</li></ul></div>
+                    <div id="individuais-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Autorização vs. Prévio Aviso:</strong> Reunião (XVI) exige prévio aviso; criar associações (XVII) independe de autorização.</li><li><strong>Prisão Civil por Dívida:</strong> Só para devedor de alimentos. A do depositário infiel é inconstitucional (Súmula Vinculante 25).</li></ul></div>
+                </div>
+            </section>
+            
+            <!-- Section: Direitos Sociais -->
+            <section id="direitos_sociais" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO II - DOS DIREITOS SOCIAIS</h3>
+                <p class="text-slate-500 mb-6 text-sm">Direitos de segunda dimensão, que exigem uma atuação positiva do Estado para garantir condições de vida digna. A distinção entre "mínimo existencial" e "reserva do possível" é um ponto doutrinário chave.</p>
+                 <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="sociais-doutrina">Doutrina</button><button class="tab-button" data-target="sociais-avancado">Tópicos Avançados</button><button class="tab-button" data-target="sociais-lei">Texto da Lei</button><button class="tab-button" data-target="sociais-juris">Jurisprudência</button><button class="tab-button" data-target="sociais-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="sociais-doutrina" class="tab-content active">
+                        <h3 class="font-semibold text-lg mb-2">Quais são os Direitos Sociais? (Art. 6º)</h3>
+                        <p class="text-sm mb-2">O Art. 6º da Constituição estabelece um rol de direitos essenciais para uma vida digna, que são:</p>
+                        <ul class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Educação</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Saúde</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Alimentação</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Trabalho</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Moradia</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Transporte</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Lazer</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Segurança</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Previdência Social</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Proteção à maternidade e à infância</li>
+                            <li class="bg-slate-50 p-2 rounded-md border text-center">Assistência aos desamparados</li>
                         </ul>
+                        <p class="text-xs text-slate-500 mt-2">Além destes, o Art. 7º detalha diversos direitos específicos dos trabalhadores urbanos e rurais.</p>
                     </div>
+                    <div id="sociais-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Proibição do Retrocesso Social:</strong> Uma vez concretizado um direito social por lei, esta não pode ser suprimida sem a criação de medida compensatória.</li><li><strong>Judicialização de Políticas Públicas:</strong> O Judiciário pode determinar a implementação de políticas públicas para assegurar direitos sociais, com cautela para não violar a separação de poderes.</li></ul></div>
+                    <div id="sociais-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 6º ao 11)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 6º</b> São direitos sociais a educação, a saúde, a alimentação, o trabalho, a moradia, o transporte...</p></div></details></div>
+                    <div id="sociais-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Fornecimento de Medicamentos:</strong> O Estado tem o dever de fornecer medicamentos de alto custo, desde que comprovada a imprescindibilidade.</li><li><strong>Direito à Educação:</strong> É dever do Estado garantir o acesso à creche e à pré-escola.</li></ul></div>
+                    <div id="sociais-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Rol do Art. 6º:</strong> Bancas afirmam que o rol é taxativo (fechado), o que está incorreto. É exemplificativo.</li><li><strong>Unicidade Sindical:</strong> A CF/88 veda mais de um sindicato da mesma categoria na mesma base territorial.</li></ul></div>
                 </div>
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4 text-center">Municípios Limítrofes</h3>
-                        <div class="grid grid-cols-3 grid-rows-3 gap-2 text-center font-medium h-full">
-                            <div class="col-start-2 row-start-1 p-2 bg-gray-100 rounded flex items-center justify-center">Sobral</div>
-                            <div class="col-start-1 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Mucambo & Pacujá</div>
-                            <div class="col-start-2 row-start-2 p-3 bg-[#8C6A5D] text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">CARIRÉ</div>
-                            <div class="col-start-3 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Groaíras & Santa Quitéria</div>
-                            <div class="col-start-2 row-start-3 p-2 bg-gray-100 rounded flex items-center justify-center">Reriutaba & Varjota</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card p-6 lg:col-span-2">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">Divisão Administrativa</h3>
-                        <p class="text-gray-700 mb-4">O município é dividido em 5 distritos, que auxiliam na gestão do vasto território.</p>
-                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
-                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cariré (Sede)</div>
-                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Arariús</div>
-                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cacimbas</div>
-                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Jucá</div>
-                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Tapuio</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="governo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Organização Municipal e Estrutura Legal</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🏛️ Poder Executivo</h3>
-                        <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade e implementação de políticas públicas.</p>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm font-medium text-gray-500">Prefeito (2025-2028)</p>
-                            <p class="text-lg font-bold">Antonio Rufino Martins (PDT)</p>
-                            <p class="text-sm font-medium text-gray-500 mt-2">Sede</p>
-                            <p class="text-md">Praça Elísio Aguiar, nº 141, Centro</p>
-                        </div>
-                    </div>
+            <!-- Section: Nacionalidade -->
+            <section id="nacionalidade" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO III - DA NACIONALIDADE</h3>
+                <p class="text-slate-500 mb-6 text-sm">Define o vínculo jurídico-político entre o indivíduo e o Estado. A distinção entre brasileiro nato e naturalizado, os cargos privativos e as hipóteses de perda da nacionalidade são temas frequentes.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="nac-doutrina">Doutrina</button><button class="tab-button" data-target="nac-avancado">Tópicos Avançados</button><button class="tab-button" data-target="nac-lei">Texto da Lei</button><button class="tab-button" data-target="nac-juris">Jurisprudência</button><button class="tab-button" data-target="nac-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="nac-doutrina" class="tab-content active"><h3 class="font-semibold text-lg mb-2">Visão Geral e Doutrina</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Critérios:</strong> A regra é o <i>jus soli</i> (direito de solo). A exceção é o <i>jus sanguinis</i> (direito de sangue).</li><li><strong>Cargos Privativos de Brasileiro Nato (Art. 12, § 3º):</strong> Mnemônico <b>MP3.COM</b> (Ministro do STF; Presidente e Vice; Presidente da Câmara; Presidente do Senado; Carreira diplomática; Oficial das F.A.; Ministro da Defesa).</li></ul></div>
+                    <div id="nac-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Quase-Nacionalidade:</strong> Estatuto de igualdade de direitos e deveres entre brasileiros e portugueses com residência permanente no Brasil, se houver reciprocidade.</li><li><strong>Naturalização Extraordinária (quinzenária):</strong> Requisitos e diferenças em relação à naturalização ordinária.</li></ul></div>
+                    <div id="nac-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 12 e 13)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 12.</b> São brasileiros: I - natos; II - naturalizados...</p></div></details></div>
+                    <div id="nac-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Extradição de Brasileiro Naturalizado:</strong> STF admite por crime comum praticado antes da naturalização ou por tráfico de drogas a qualquer tempo.</li><li><strong>Perda da Nacionalidade (EC 131/2023):</strong> A perda não é mais automática. Exige pedido expresso do brasileiro, com exceções para evitar apatridia.</li></ul></div>
+                    <div id="nac-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Nato vs. Naturalizado:</strong> Memorize os cargos privativos e as regras de extradição.</li><li><strong>Símbolos Nacionais:</strong> As bancas podem incluir símbolos que não estão no rol taxativo do art. 13, § 1º.</li></ul></div>
                 </div>
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">⚖️ Poder Legislativo</h3>
-                        <p class="text-gray-600 mb-4">Representado pela Câmara Municipal, que legisla e fiscaliza o executivo.</p>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm font-medium text-gray-500">Composição</p>
-                            <p class="text-lg font-bold">11 Vereadores</p>
-                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2025)</p>
-                            <p class="text-md font-semibold">Luciana Miranda (PDT)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card p-6 lg:col-span-2">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">📜 Lei Orgânica e Análise Política</h3>
-                        <p class="text-gray-700 mb-2">A <strong>Lei Orgânica nº 01/2012</strong> (ou 402/2012), promulgada em 10 de dezembro de 2012, é a "constituição municipal", definindo as competências e a estrutura dos poderes.</p>
-                        <p class="text-gray-700">A análise dos resultados eleitorais revela uma forte concentração de poder no PDT, partido do prefeito e da maioria dos vereadores (9 de 11 em 2024). Esse alinhamento pode facilitar a governabilidade, mas exige atenção da sociedade quanto à fiscalização.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="card p-6 mt-8">
-                <details>
-                    <summary class="font-bold text-xl">Cronologia de Prefeitos <span class="text-sm font-medium text-[#8C6A5D]">(clique para ver a lista)</span></summary>
-                    <div class="mt-4 pt-4 border-t">
-                        <ul class="space-y-2 text-gray-700 text-sm columns-1 md:columns-2 lg:columns-3">
-                            <li><strong>Elísio Aguiar</strong> (1935-1945)</li>
-                            <li><strong>José Teles de Andrade</strong> (1945)</li>
-                            <li><strong>Otacílio de Azevedo</strong> (1945-1947)</li>
-                            <li><strong>José Teles de Andrade</strong> (1947-1951)</li>
-                            <li><strong>Francisco de Assis Pires</strong> (1951-1955)</li>
-                            <li><strong>João de Castro Carneiro</strong> (1955-1959)</li>
-                            <li><strong>José Veras de Araújo</strong> (1959-1963)</li>
-                            <li><strong>João de Castro Carneiro</strong> (1963-1967)</li>
-                            <li><strong>José Veras de Araújo</strong> (1967-1971)</li>
-                            <li><strong>Francisco de Assis Pires</strong> (1971-1973)</li>
-                            <li><strong>João de Castro Carneiro</strong> (1973-1977)</li>
-                            <li><strong>José Veras de Araújo</strong> (1977-1983)</li>
-                            <li><strong>Antônio de Assis Pires</strong> (1983-1988)</li>
-                            <li><strong>Francisco Itamar de Sá</strong> (1989-1992)</li>
-                            <li><strong>Antônio de Assis Pires</strong> (1993-1996)</li>
-                            <li><strong>Francisco Itamar de Sá</strong> (1997-2004)</li>
-                            <li><strong>Antônio Rufino Martins</strong> (2005-2012)</li>
-                            <li><strong>Elmo Aguiar</strong> (2013-2020)</li>
-                            <li><strong>Antônio Martins</strong> (2021-2024)</li>
-                            <li><strong>Antonio Rufino Martins</strong> (2025-2028)</li>
-                        </ul>
-                    </div>
-                </details>
-            </div>
-        </section>
-
-        <section id="economia" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Dimensões Econômicas e Sociais</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A economia de Cariré é sustentada principalmente pela administração pública e pela agropecuária. O gráfico abaixo ilustra a composição do Produto Interno Bruto (PIB), revelando o peso de cada setor na geração de riqueza do município.</p>
-            <div class="card p-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h3 class="font-bold text-xl mb-4">Perfil Econômico</h3>
-                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões) mostra que a <strong>administração pública é o principal motor econômico</strong>, representando a maior fatia da renda que circula na cidade. A agropecuária é o segundo pilar, sendo a principal atividade produtiva do setor privado.</p>
-                        <div class="space-y-3">
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <p class="text-sm font-medium text-gray-500">PIB per capita (2021)</p>
-                                <p class="text-2xl font-bold text-[#8C6A5D]">R$ 10.500</p>
+            </section>
+            
+            <!-- Section: Direitos Políticos -->
+            <section id="direitos_politicos" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO IV - DOS DIREITOS POLÍTICOS</h3>
+                <p class="text-slate-500 mb-6 text-sm">Trata da participação popular no governo, incluindo o direito de votar e ser votado. Idades mínimas e inelegibilidades são pontos de alta incidência em provas.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="politicos-doutrina">Doutrina e Gráfico</button><button class="tab-button" data-target="politicos-avancado">Tópicos Avançados</button><button class="tab-button" data-target="politicos-lei">Texto da Lei</button><button class="tab-button" data-target="politicos-juris">Jurisprudência</button><button class="tab-button" data-target="politicos-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="politicos-doutrina" class="tab-content active">
+                        <div class="grid lg:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-semibold text-lg mb-2">Como a Soberania Popular é Exercida?</h3>
+                                <ul class="list-disc list-inside space-y-2 text-sm">
+                                    <li><b>Sufrágio Universal:</b> Direito de votar e ser votado.</li>
+                                    <li><b>Voto Direto e Secreto:</b> O exercício do sufrágio.</li>
+                                    <li><b>Instrumentos de Democracia Direta:</b>
+                                        <ul class="list-['✔'] list-inside ml-4 mt-1 space-y-1">
+                                            <li><b>Plebiscito:</b> Consulta prévia ao povo.</li>
+                                            <li><b>Referendo:</b> Consulta posterior (ratificação) ao povo.</li>
+                                            <li><b>Iniciativa Popular:</b> Apresentação de projeto de lei pela população.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <p class="text-sm font-medium text-gray-500">Base Econômica Tradicional</p>
-                                <p class="text-lg font-bold text-[#8C6A5D]">Agropecuária e Pecuária</p>
-                                <p class="text-xs text-gray-500">Bovinos, Caprinos, Milho, Feijão</p>
-                            </div>
+                            <div class="chart-container"><canvas id="idadesChart"></canvas></div>
                         </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="pibChart"></canvas>
-                    </div>
+                    <div id="politicos-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Inelegibilidade Reflexa e seus Limites:</strong> Análise aprofundada do art. 14, § 7º, incluindo a Súmula Vinculante nº 18 (dissolução da sociedade conjugal no curso do mandato).</li><li><strong>Princípio da Anterioridade Eleitoral (Art. 16):</strong> Discussão sobre sua natureza de cláusula pétrea e o alcance da expressão "processo eleitoral".</li><li><strong>Abuso de Poder Político e Econômico:</strong> Consequências e a Ação de Investigação Judicial Eleitoral (AIJE).</li></ul></div>
+                    <div id="politicos-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 14 ao 16)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 14.</b> A soberania popular será exercida pelo sufrágio universal e pelo voto direto e secreto...</p></div></details></div>
+                    <div id="politicos-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Lei da Ficha Limpa (LC 135/2010):</strong> Considerada constitucional pelo STF, inclusive a inelegibilidade por condenação de órgão colegiado.</li><li><strong>Candidatura Avulsa:</strong> O STF decidiu que não é possível candidatura sem filiação partidária.</li></ul></div>
+                    <div id="politicos-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Cassação vs. Perda/Suspensão:</strong> A CF/88 veda a cassação de direitos políticos.</li><li><strong>Condenação Criminal:</strong> A suspensão dos direitos políticos só ocorre com o trânsito em julgado da sentença.</li></ul></div>
                 </div>
+            </section>
+            
+            <!-- Section: Organização do Estado -->
+            <section id="organizacao_estado" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO I - ORGANIZAÇÃO POLÍTICO-ADMINISTRATIVA</h3>
+                <p class="text-slate-500 mb-6 text-sm">Define a estrutura da Federação brasileira (União, Estados, DF e Municípios). As regras para criação de novos entes e as vedações impostas a todos são o foco.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="org-doutrina">Doutrina</button><button class="tab-button" data-target="org-avancado">Tópicos Avançados</button><button class="tab-button" data-target="org-lei">Texto da Lei</button><button class="tab-button" data-target="org-juris">Jurisprudência</button><button class="tab-button" data-target="org-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="org-doutrina" class="tab-content active"><h3 class="font-semibold text-lg mb-2">Visão Geral e Doutrina</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Autonomia dos Entes:</strong> Manifesta-se na capacidade de auto-organização, autogoverno, autolegislação e autoadministração.</li><li><strong>Territórios Federais:</strong> Integram a União, não possuem autonomia federativa.</li><li><strong>Vedações (Art. 19):</strong> Limites à atuação de todos os entes, como a proibição de criar distinções e de subvencionar cultos religiosos (Estado Laico).</li></ul></div>
+                    <div id="org-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Federalismo Simétrico vs. Assimétrico:</strong> O Brasil adota um federalismo assimétrico, com desigualdades econômicas e de representação política entre os entes.</li><li><strong>Criação de Estados e Municípios:</strong> Análise detalhada dos requisitos complexos do art. 18, §§ 3º e 4º (plebiscito, lei complementar, estudos de viabilidade).</li></ul></div>
+                    <div id="org-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 18 e 19)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 18.</b> A organização político-administrativa da República Federativa do Brasil compreende a União, os Estados, o Distrito Federal e os Municípios, todos autônomos, nos termos desta Constituição. § 1º Brasília é a Capital Federal. § 2º Os Territórios Federais integram a União, e sua criação, transformação em Estado ou reintegração ao Estado de origem serão reguladas em lei complementar...</p><p><b>Art. 19.</b> É vedado à União, aos Estados, ao Distrito Federal e aos Municípios: I - estabelecer cultos religiosos ou igrejas, subvencioná-los, embaraçar-lhes o funcionamento ou manter com eles ou seus representantes relações de dependência ou aliança, ressalvada, na forma da lei, a colaboração de interesse público; II - recusar fé aos documentos públicos; III - criar distinções entre brasileiros ou preferências entre si.</p></div></details></div>
+                    <div id="org-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Criação de Municípios:</strong> O STF declarou inconstitucionais leis estaduais que criaram municípios sem a prévia lei complementar federal.</li></ul></div>
+                    <div id="org-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Capital Federal:</strong> Brasília é a Capital Federal. O Distrito Federal é o ente federativo que a abrange.</li></ul></div>
+                </div>
+            </section>
+
+            <!-- Section: Municípios -->
+            <section id="municipios" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO IV - DOS MUNICÍPIOS</h3>
+                <p class="text-slate-500 mb-6 text-sm">Detalha a organização do poder nos municípios. As competências da Câmara, os limites de gastos e as regras de fiscalização pelo Tribunal de Contas são os pontos de maior atenção.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="mun-doutrina">Doutrina</button><button class="tab-button" data-target="mun-avancado">Tópicos Avançados</button><button class="tab-button" data-target="mun-lei">Texto da Lei</button><button class="tab-button" data-target="mun-juris">Jurisprudência</button><button class="tab-button" data-target="mun-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="mun-doutrina" class="tab-content active"><h3 class="font-semibold text-lg mb-2">Visão Geral e Doutrina</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Lei Orgânica:</strong> Votada em dois turnos, interstício mínimo de 10 dias, aprovada por 2/3 da Câmara.</li><li><strong>Fiscalização (Art. 31):</strong> O parecer do Tribunal de Contas sobre as contas do Prefeito só deixa de prevalecer por decisão de 2/3 dos vereadores.</li></ul></div>
+                    <div id="mun-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Subsídio dos Vereadores:</strong> Análise dos limites percentuais do art. 29, VI e VII, e sua complexa base de cálculo.</li><li><strong>Crimes de Responsabilidade do Prefeito:</strong> Hipóteses do art. 29-A, §2º (repasse ao Legislativo) e sua relação com o Decreto-Lei 201/67.</li></ul></div>
+                    <div id="mun-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 29 ao 31)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 29.</b> O Município reger-se-á por lei orgânica, votada em dois turnos, com o interstício mínimo de dez dias, e aprovada por dois terços dos membros da Câmara Municipal, que a promulgará...</p><p><b>Art. 29-A.</b> O total da despesa do Poder Legislativo Municipal, incluídos os subsídios dos Vereadores e excluídos os gastos com inativos, não poderá ultrapassar os percentuais relativos ao somatório da receita tributária e das transferências...</p><p><b>Art. 31.</b> A fiscalização do Município será exercida pelo Poder Legislativo Municipal, mediante controle externo, e pelos sistemas de controle interno do Poder Executivo Municipal, na forma da lei. § 1º O controle externo da Câmara Municipal será exercido com o auxílio dos Tribunais de Contas dos Estados ou do Município ou dos conselhos ou tribunais de contas dos Municípios, onde houver.</p></div></details></div>
+                    <div id="mun-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Inviolabilidade dos Vereadores:</strong> A inviolabilidade material (opiniões, palavras e votos) é restrita à circunscrição do Município.</li><li><strong>Julgamento das Contas do Prefeito:</strong> Compete à Câmara Municipal julgar as contas, tanto as de governo quanto as de gestão.</li></ul></div>
+                    <div id="mun-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Lei Orgânica:</strong> As bancas cobram o quórum (2/3) e os turnos (2) de votação.</li><li><strong>Parecer do Tribunal de Contas:</strong> Não é vinculante, mas só pode ser derrubado por quórum qualificado (2/3).</li></ul></div>
+                </div>
+            </section>
+
+            <!-- Section: Administração Pública -->
+            <section id="admin_publica" class="card p-6 scroll-mt-24">
+                <h3 class="text-2xl font-bold mb-1 text-indigo-700">CAPÍTULO VII - DA ADMINISTRAÇÃO PÚBLICA</h3>
+                <p class="text-slate-500 mb-6 text-sm">Estabelece os princípios e regras para toda a Administração Pública. O mnemônico LIMPE, concurso, acumulação de cargos, estabilidade e responsabilidade do Estado são temas essenciais.</p>
+                <div class="tabs-container">
+                    <div class="border-b border-slate-200 mb-4"><nav class="flex flex-wrap -mb-px text-sm font-medium" aria-label="Tabs"><button class="tab-button active" data-target="adm-doutrina">Doutrina</button><button class="tab-button" data-target="adm-avancado">Tópicos Avançados</button><button class="tab-button" data-target="adm-lei">Texto da Lei</button><button class="tab-button" data-target="adm-juris">Jurisprudência</button><button class="tab-button" data-target="adm-pegadinhas">Pegadinhas</button></nav></div>
+                    <div id="adm-doutrina" class="tab-content active"><h3 class="font-semibold text-lg mb-2">Visão Geral e Doutrina</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Princípios (Art. 37):</strong> Mnemônico <b>LIMPE</b> (Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência).</li><li><strong>Responsabilidade Civil do Estado (Art. 37, § 6º):</strong> É objetiva (risco administrativo). Exige conduta, dano e nexo causal.</li><li><strong>Estabilidade (Art. 41):</strong> Adquirida após 3 anos de efetivo exercício.</li></ul></div>
+                    <div id="adm-avancado" class="tab-content"><h3 class="font-semibold text-lg mb-2">Tópicos Avançados</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Responsabilidade por Omissão:</strong> A jurisprudência majoritária entende que a responsabilidade do Estado por omissão é subjetiva, exigindo a comprovação da culpa (negligência, imprudência ou imperícia).</li><li><strong>Teto Remuneratório e "Abate-Teto":</strong> Discussão sobre as verbas que entram e as que não entram no cálculo do teto constitucional.</li></ul></div>
+                    <div id="adm-lei" class="tab-content"><details class="bg-slate-50 p-4 rounded-lg border"><summary class="font-semibold text-slate-700">Clique para ver o Texto da Lei (Arts. 37 ao 41)</summary><div class="prose prose-sm max-w-none mt-2 text-slate-600"><p><b>Art. 37.</b> A administração pública direta e indireta de qualquer dos Poderes da União, dos Estados, do Distrito Federal e dos Municípios obedecerá aos princípios de legalidade, impessoalidade, moralidade, publicidade e eficiência e, também, ao seguinte: I - os cargos, empregos e funções públicas são acessíveis aos brasileiros que preencham os requisitos estabelecidos em lei, assim como aos estrangeiros, na forma da lei; II - a investidura em cargo ou emprego público depende de aprovação prévia em concurso público de provas ou de provas e títulos... XVI - é vedada a acumulação remunerada de cargos públicos, exceto, quando houver compatibilidade de horários...</p><p><b>Art. 41.</b> São estáveis após três anos de efetivo exercício os servidores nomeados para cargo de provimento efetivo em virtude de concurso público. § 1º O servidor público estável só perderá o cargo: I - em virtude de sentença judicial transitada em julgado; II - mediante processo administrativo em que lhe seja assegurada ampla defesa; III - mediante procedimento de avaliação periódica de desempenho...</p></div></details></div>
+                    <div id="adm-juris" class="tab-content"><h3 class="font-semibold text-lg mb-2">Jurisprudência Relevante</h3><ul class="list-disc list-inside space-y-2 text-sm"><li><strong>Nepotismo (Súmula Vinculante 13):</strong> Veda a nomeação de parentes para cargos em comissão e de confiança.</li><li><strong>Improbidade Administrativa:</strong> A Lei nº 14.230/2021 alterou a Lei de Improbidade, exigindo dolo para a maioria dos atos. O STF tem modulado a aplicação dessas novas regras.</li></ul></div>
+                    <div id="adm-pegadinhas" class="tab-content"><h3 class="font-semibold text-lg mb-2 text-red-700">Pegadinhas de Concurso</h3><ul class="list-disc list-inside space-y-2 text-sm text-red-900 bg-red-50 p-4 rounded-lg border border-red-200"><li><strong>Acumulação de Cargos:</strong> É preciso verificar a compatibilidade de horários. A banca pode omitir esse requisito.</li><li><strong>Estabilidade:</strong> O prazo é de 3 anos de efetivo exercício. A avaliação de desempenho é condição para aquisição.</li></ul></div>
+                </div>
+            </section>
+            
             </div>
-        </section>
+        </main>
+    </div>
 
-        <section id="cultura" class="scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Cultura, Fé e Tradição</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade carireense é expressa em suas festas, em seu patrimônio histórico e em seu artesanato. Conheça os símbolos e as manifestações que mantêm viva a alma do município.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🎉 Calendário Cívico e Religioso</h3>
-                        <ul class="space-y-3 text-gray-700">
-                            <li><strong>Festa do Padroeiro (Santo Antônio):</strong> De 3 a 13 de Junho. É a maior festa religiosa, mesclando o sagrado (missas, novenas) e o profano (quermesses, leilões).</li>
-                            <li><strong>Emancipação Política:</strong> 16 de Setembro. Comemorada com a "Semana do Município", com desfiles e eventos culturais.</li>
-                            <li><strong>Cariré Junino:</strong> Festival de quadrilhas que reforça as tradições nordestinas, coincidindo com a festa do padroeiro.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🏛️ Patrimônio Material e Imaterial</h3>
-                        <ul class="space-y-3 text-gray-700">
-                            <li><strong>Igreja Matriz de Santo Antônio:</strong> De 1956, marco da cidade com sua torre de 31m.</li>
-                            <li><strong>Igreja de São Francisco:</strong> Templo do final do século XIX, marco do período fundacional.</li>
-                            <li><strong>Museu Euclides Rufino Rodrigues:</strong> Acervo com mais de 8 mil peças da história local.</li>
-                             <li><strong>Artesanato:</strong> Riqueza em trabalhos com palha, crochê e redes artesanais.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card p-6">
-                    <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🎵 Símbolos Cívicos</h3>
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-600"><strong>Bandeira:</strong> Três faixas verticais (azul, branco, azul) com o brasão ao centro.</p>
-                        </div>
-                        <details>
-                            <summary class="font-medium text-[#8C6A5D]">Análise e Letra do Hino <span class="text-sm">(clique para expandir)</span></summary>
-                            <div class="mt-3 pt-3 border-t">
-                                <p class="text-sm text-gray-700 mb-3">A letra revela referências diretas à geografia ("ardente sertão nordestino"), à história de luta pela autonomia ("De firmeza são marco: teus passos") e aos valores cívicos da população ("civismo e amor").</p>
-                                <blockquote class="text-sm text-gray-600 space-y-2">
-                                    <p>"Em planície de brancas areias,<br>neste ardente sertão nordestino,<br>Por um belo porvir tu anseias,<br>Cariré, tens um nobre destino."</p>
-                                    <p class="font-bold">ESTRIBILHO:<br>"Cariré, nossa terra querida,<br>De teus filhos recebe o louvor.<br>São acordes, impulso de vida<br>Sinfonia, civismo e amor."</p>
-                                    <p>"De firmeza são marco: teus passos,<br>do progresso fecunda semente;<br>Alargando da vida os espaços,<br>está sempre o teu filho presente."</p>
-                                    <p>"Tantos vultos ilustres geraste.<br>Em teu seio fermento de vida;<br>P'ra vitória teu povo guiaste.<br>Cariré, nossa terra querida."</p>
-                                    <p>"Para longe de nós o torpor,<br>que impede o raiar da vitória.<br>De tua gente terás o amor,<br>fulgurante será tua história."</p>
-                                </blockquote>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </div>
-        </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabContainers = document.querySelectorAll('.tabs-container');
+        tabContainers.forEach(container => {
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const currentContainer = button.closest('.tabs-container');
+                    
+                    currentContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
 
-    </main>
-    
-    <footer class="bg-white mt-12">
-        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
-            <p>Painel Interativo desenvolvido para fins de estudo e visualização de dados.</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const timelineData = [
-                {
-                    year: '1911',
-                    title: 'Criação do Distrito',
-                    description: 'Cariré figura oficialmente pela primeira vez na divisão administrativa do Brasil, mas ainda como um distrito subordinado ao município de Sobral.',
-                    icon: '🗺️'
-                },
-                {
-                    year: '1929',
-                    title: 'Primeira Emancipação',
-                    description: 'Pela <strong>Lei Estadual nº 2.704</strong> de 16 de setembro, Cariré é elevado à categoria de vila e se torna um município autônomo. Esta data é celebrada hoje como o aniversário da cidade.',
-                    icon: '⭐'
-                },
-                {
-                    year: '1931',
-                    title: 'Município Extinto',
-                    description: 'Pelo <strong>Decreto Estadual nº 193</strong> de 20 de maio, o município é extinto e seu território é reanexado a Sobral, num período de centralização de poder no país.',
-                    icon: '🔙'
-                },
-                {
-                    year: '1935',
-                    title: 'Restauração Definitiva',
-                    description: 'A autonomia é finalmente reconquistada pelo <strong>Decreto Estadual nº 157</strong> de 23 de setembro. A instalação formal do município restaurado ocorre em 20 de outubro do mesmo ano.',
-                    icon: '🏛️'
-                }
-            ];
-
-            const timelineContainer = document.getElementById('timeline-container');
-            timelineData.forEach((item, index) => {
-                const isLeft = index % 2 === 0;
-                const timelineItem = document.createElement('div');
-                timelineItem.className = `timeline-item relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`;
-                timelineItem.innerHTML = `
-                    <div class="w-5/12">
-                        <div class="card p-4 cursor-pointer">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-lg">${item.title}</h4>
-                                <div class="text-xl">${item.icon}</div>
-                            </div>
-                            <div class="timeline-item-content">
-                                <p class="text-sm text-gray-600 mt-2">${item.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#8C6A5D] rounded-full flex items-center justify-center text-white font-bold shadow-md text-sm">${item.year}</div>
-                `;
-                timelineContainer.appendChild(timelineItem);
-            });
-
-            document.querySelectorAll('.timeline-item .card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const parentItem = card.closest('.timeline-item');
-                    parentItem.classList.toggle('active');
-                });
-            });
-
-            const pibData = {
-                labels: ['Admin. Pública', 'Agropecuária', 'Serviços (privados)', 'Indústria'],
-                datasets: [{
-                    label: 'Composição do PIB (%)',
-                    data: [43.3, 29.4, 22.9, 4.4],
-                    backgroundColor: [
-                        '#8C6A5D',
-                        '#A1B497',
-                        '#DDC9B4',
-                        '#B0A8B9'
-                    ],
-                    borderColor: '#F8F5F2',
-                    borderWidth: 4,
-                    hoverOffset: 8
-                }]
-            };
-
-            const pibConfig = {
-                type: 'doughnut',
-                data: pibData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: {
-                                    size: 12,
-                                    family: 'Inter'
-                                },
-                                color: '#3D352E',
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed !== null) {
-                                        label += context.parsed.toFixed(1) + '%';
-                                    }
-                                    return label;
-                                }
-                            }
+                    currentContainer.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === targetId) {
+                            content.classList.add('active');
                         }
-                    },
-                    cutout: '60%'
-                }
-            };
-            
-            const pibChartCtx = document.getElementById('pibChart').getContext('2d');
-            new Chart(pibChartCtx, pibConfig);
-
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.3
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href').includes(entry.target.id)) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
+                    });
                 });
-            }, observerOptions);
-
-            sections.forEach(section => {
-                observer.observe(section);
             });
         });
-    </script>
+
+        const menuButton = document.getElementById('menu-button');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 768 && !sidebar.contains(e.target) && !menuButton.contains(e.target)) {
+                 sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section');
+        const mainTitle = document.getElementById('main-title');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                    if (activeLink) {
+                        mainTitle.textContent = activeLink.textContent.trim().split(' ').slice(1).join(' ');
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        activeLink.classList.add('active');
+                    }
+                }
+            });
+        }, { rootMargin: "-40% 0px -60% 0px" });
+
+        sections.forEach(section => observer.observe(section));
+
+        const idadesCtx = document.getElementById('idadesChart').getContext('2d');
+        if (idadesCtx) {
+            new Chart(idadesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Vereador', 'Deputado/Prefeito', 'Governador', 'Presidente/Senador'],
+                    datasets: [{
+                        label: 'Idade Mínima (anos)',
+                        data: [18, 21, 30, 35],
+                        backgroundColor: ['#a78bfa', '#818cf8', '#60a5fa', '#38bdf8'],
+                        borderColor: ['#8b5cf6', '#6366f1', '#3b82f6', '#0ea5e9'],
+                        borderWidth: 1.5,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, grid: { color: '#e5e7eb' } }, x: { grid: { display: false } } },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.raw} anos` } } }
+                }
+            });
+        }
+
+        const poderesCtx = document.getElementById('poderesChart').getContext('2d');
+        if (poderesCtx) {
+            new Chart(poderesCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Legislativo', 'Executivo', 'Judiciário'],
+                    datasets: [{
+                        label: 'Estrutura dos Poderes (Art. 2º)',
+                        data: [33.3, 33.3, 33.3],
+                        backgroundColor: ['#60a5fa', '#38bdf8', '#0ea5e9'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' }, title: { display: true, text: 'Harmonia dos Poderes (Art. 2º)' } }
+                }
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

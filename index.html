@@ -9,30 +9,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Sertão Sereno -->
-    <!-- Application Structure Plan: A single-page dashboard structure with a sticky top navigation bar for smooth scrolling to thematic sections. This architecture was chosen to break down the dense report into digestible, non-linear modules (Overview, History, Geography, Government, Economy, Culture), allowing users to explore topics of interest in any order. Key interactions include an interactive timeline for the complex emancipation history and a dynamic chart for the economy, enhancing user engagement and comprehension over a static text format. -->
-    <!-- Visualization & Content Choices: 
-        - Emancipation History: Report Info -> Complex timeline of laws and dates. Goal -> Show change over time. Viz -> Interactive vertical timeline (HTML/CSS/JS). Interaction -> Click to reveal details. Justification -> Simplifies a complex narrative. Method -> Custom JS.
-        - Mayors Chronology: Report Info -> List of mayors. Goal -> Organize historical data. Viz -> Collapsible list. Interaction -> Click to expand. Justification -> Presents extensive data without cluttering the page.
-        - PIB Composition: Report Info -> Percentage breakdown of economic sectors. Goal -> Compare proportions. Viz -> Doughnut Chart. Interaction -> Hover for tooltips. Justification -> Instantly shows the public sector's dominance. Library -> Chart.js.
-        - Government Structure: Report Info -> Mayor, Chamber composition, addresses. Goal -> Organize power structure. Viz -> Styled info cards (HTML/Tailwind). Interaction -> None. Justification -> Clear, organized presentation.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8F5F2;
             color: #3D352E;
         }
-        .nav-link {
+       .nav-link {
             transition: color 0.3s, border-bottom-color 0.3s;
             border-bottom: 2px solid transparent;
         }
-        .nav-link.active, .nav-link:hover {
+       .nav-link.active,.nav-link:hover {
             color: #8C6A5D;
             border-bottom-color: #8C6A5D;
         }
-        .card {
+       .card {
             background-color: #FFFFFF;
             border-radius: 0.75rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -41,22 +32,22 @@
             display: flex;
             flex-direction: column;
         }
-        .card-content {
+       .card-content {
             flex-grow: 1;
         }
-        .card:hover {
+       .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
-        .timeline-item-content {
+       .timeline-item-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s ease-in-out;
         }
-        .timeline-item.active .timeline-item-content {
+       .timeline-item.active .timeline-item-content {
             max-height: 500px;
         }
-        .chart-container {
+       .chart-container {
             position: relative;
             width: 100%;
             max-width: 450px;
@@ -80,7 +71,7 @@
             100%  {opacity: 1; transform: translateY(0)}
         }
         @media (min-width: 768px) {
-            .chart-container {
+           .chart-container {
                 height: 350px;
                 max-height: 400px;
             }
@@ -151,14 +142,15 @@
         </section>
 
         <section id="historia" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Uma História de Luta e Autonomia</h2>
+            <h2 class="text-3xl font-bold mb-2 text-center">Trajetória Histórica</h2>
             <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A trajetória de Cariré, desde suas origens em terras indígenas até se tornar um município autônomo, foi marcada por avanços e recuos. Explore os marcos decisivos abaixo.</p>
             
             <div class="card p-6 mb-8">
-                <h3 class="font-bold text-xl mb-4">Origens e Toponímia</h3>
-                <p class="text-gray-700 mb-4">As terras que hoje formam Cariré eram originalmente habitadas por povos como os <strong>Tupinambás</strong> e <strong>Areriús</strong>. O nome "Cariré" tem origem Tupi-Guarani, com duas interpretações principais:</p>
+                <h3 class="font-bold text-xl mb-4">Origens Primordiais e a Gênese Ferroviária</h3>
+                <p class="text-gray-700 mb-2">A história de Cariré começa muito antes de sua formalização. As terras, banhadas pelo rio Acaraú, eram território de etnias indígenas como os <strong>Tupinambás</strong> e <strong>Areriús</strong>.</p>
+                <p class="text-gray-700 mb-4">O evento transformador foi a expansão da Estrada de Ferro de Sobral. A inauguração da estação em <strong>1 de novembro de 1893</strong> não foi apenas um acréscimo de infraestrutura; foi a própria razão de ser da cidade, ditando sua localização, economia e estrutura social inicial.</p>
                  <details class="bg-gray-50 rounded-lg p-4">
-                    <summary class="font-medium text-[#8C6A5D]">Ver interpretações do nome... <span class="text-sm">(clique para expandir)</span></summary>
+                    <summary class="font-medium text-[#8C6A5D]">Origem do Nome (Toponímia) <span class="text-sm">(clique para expandir)</span></summary>
                     <ul class="mt-3 space-y-2 text-sm text-gray-600 border-t pt-3">
                         <li><strong>1. Peixe Diferente:</strong> Junção de `CARI` (peixe cascudo) com `RÉ` (diferente), significando "pseudo-cari".</li>
                         <li><strong>2. Depois da Queimada:</strong> Combinação de `CAI` (queimada) com `RIRÉ` (depois), significando "terra que fica depois da zona da mata".</li>
@@ -167,6 +159,7 @@
             </div>
 
             <div class="relative w-full max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold mb-6 text-center">Caminho para a Autonomia</h3>
                 <div class="absolute left-1/2 h-full w-1 bg-gray-300 transform -translate-x-1/2"></div>
                 <div id="timeline-container" class="space-y-12">
                 </div>
@@ -175,14 +168,14 @@
 
         <section id="geografia" class="mb-16 scroll-mt-24">
             <h2 class="text-3xl font-bold mb-2 text-center">A Paisagem do Sertão</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade de Cariré é profundamente moldada por sua geografia. Inserido no semiárido cearense, o município possui características únicas de clima, relevo e hidrografia, que definem o modo de vida e a cultura local.</p>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A identidade de Cariré é profundamente moldada por sua geografia. Inserido no semiárido nordestino, o município possui características únicas de clima, relevo e hidrografia, que definem o modo de vida e a cultura local.</p>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
                 <div class="card p-6">
                     <div class="card-content">
                         <h3 class="font-bold text-xl mb-4">Ficha Geográfica</h3>
                         <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Clima:</span><span>Tropical Quente Semiárido (BSh)</span></li>
-                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Vegetação:</span><span>Caatinga Arbustiva e Floresta Caducifólia Espinhosa</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Vegetação:</span><span>Caatinga Arbustiva Aberta e Floresta Caducifólia Espinhosa</span></li>
                             <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Bacia Hidrográfica:</span><span>Rio Acaraú</span></li>
                             <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Relevo:</span><span>Depressão Sertaneja</span></li>
                             <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Altitude:</span><span>149 metros</span></li>
@@ -219,31 +212,38 @@
         </section>
 
         <section id="governo" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Estrutura de Governo</h2>
-            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos, conforme define a <strong>Lei Orgânica nº 01/2012</strong>.</p>
+            <h2 class="text-3xl font-bold mb-2 text-center">Organização Municipal e Estrutura Legal</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                 <div class="card p-6">
                     <div class="card-content">
                         <h3 class="font-bold text-xl mb-4">🏛️ Poder Executivo</h3>
-                        <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade.</p>
+                        <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade e implementação de políticas públicas.</p>
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm font-medium text-gray-500">Prefeito (2021-2024)</p>
-                            <p class="text-lg font-bold">Antônio Martins (PDT)</p>
-                             <p class="text-sm font-medium text-gray-500 mt-2">Vice-Prefeito</p>
-                            <p class="text-lg font-bold">Fábio da Farmácia (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500">Prefeito (2025-2028)</p>
+                            <p class="text-lg font-bold">Antonio Rufino Martins (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Sede</p>
+                            <p class="text-md">Praça Elísio Aguiar, nº 141, Centro</p>
                         </div>
                     </div>
                 </div>
                 <div class="card p-6">
                     <div class="card-content">
                         <h3 class="font-bold text-xl mb-4">⚖️ Poder Legislativo</h3>
-                        <p class="text-gray-600 mb-4">Exercido pela Câmara Municipal, que cria leis e fiscaliza o executivo.</p>
+                        <p class="text-gray-600 mb-4">Representado pela Câmara Municipal, que legisla e fiscaliza o executivo.</p>
                         <div class="bg-gray-50 p-4 rounded-lg">
                             <p class="text-sm font-medium text-gray-500">Composição</p>
                             <p class="text-lg font-bold">11 Vereadores</p>
-                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2023-2024)</p>
-                            <p class="text-md font-semibold">Nery (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2025)</p>
+                            <p class="text-md font-semibold">Luciana Miranda (PDT)</p>
                         </div>
+                    </div>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                    <div class="card-content">
+                        <h3 class="font-bold text-xl mb-4">📜 Lei Orgânica e Análise Política</h3>
+                        <p class="text-gray-700 mb-2">A <strong>Lei Orgânica nº 01/2012</strong> (ou 402/2012), promulgada em 10 de dezembro de 2012, é a "constituição municipal", definindo as competências e a estrutura dos poderes.</p>
+                        <p class="text-gray-700">A análise dos resultados eleitorais revela uma forte concentração de poder no PDT, partido do prefeito e da maioria dos vereadores (9 de 11 em 2024). Esse alinhamento pode facilitar a governabilidade, mas exige atenção da sociedade quanto à fiscalização.</p>
                     </div>
                 </div>
             </div>
@@ -267,13 +267,11 @@
                             <li><strong>Antônio de Assis Pires</strong> (1983-1988)</li>
                             <li><strong>Francisco Itamar de Sá</strong> (1989-1992)</li>
                             <li><strong>Antônio de Assis Pires</strong> (1993-1996)</li>
-                            <li><strong>Francisco Itamar de Sá</strong> (1997-2000)</li>
-                            <li><strong>Francisco Itamar de Sá</strong> (2001-2004)</li>
-                            <li><strong>Antônio Rufino Martins</strong> (2005-2008)</li>
-                            <li><strong>Antônio Rufino Martins</strong> (2009-2012)</li>
-                            <li><strong>Elmo Aguiar</strong> (2013-2016)</li>
-                            <li><strong>Elmo Aguiar</strong> (2017-2020)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (1997-2004)</li>
+                            <li><strong>Antônio Rufino Martins</strong> (2005-2012)</li>
+                            <li><strong>Elmo Aguiar</strong> (2013-2020)</li>
                             <li><strong>Antônio Martins</strong> (2021-2024)</li>
+                            <li><strong>Antonio Rufino Martins</strong> (2025-2028)</li>
                         </ul>
                     </div>
                 </details>
@@ -281,21 +279,21 @@
         </section>
 
         <section id="economia" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl font-bold mb-2 text-center">Pilares da Economia Local</h2>
+            <h2 class="text-3xl font-bold mb-2 text-center">Dimensões Econômicas e Sociais</h2>
             <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">A economia de Cariré é sustentada principalmente pela administração pública e pela agropecuária. O gráfico abaixo ilustra a composição do Produto Interno Bruto (PIB), revelando o peso de cada setor na geração de riqueza do município.</p>
             <div class="card p-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h3 class="font-bold text-xl mb-4">Composição do PIB de Cariré</h3>
-                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões em 2021) mostra que a administração pública é o principal motor econômico, seguida pela agropecuária, a base do setor privado.</p>
+                        <h3 class="font-bold text-xl mb-4">Perfil Econômico</h3>
+                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões) mostra que a <strong>administração pública é o principal motor econômico</strong>, representando a maior fatia da renda que circula na cidade. A agropecuária é o segundo pilar, sendo a principal atividade produtiva do setor privado.</p>
                         <div class="space-y-3">
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <p class="text-sm font-medium text-gray-500">PIB per capita (2021)</p>
-                                <p class="text-2xl font-bold text-[#8C6A5D]">R$ 10.455,04</p>
+                                <p class="text-2xl font-bold text-[#8C6A5D]">R$ 10.500</p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <p class="text-sm font-medium text-gray-500">Principal Atividade Privada</p>
-                                <p class="text-2xl font-bold text-[#8C6A5D]">Agropecuária</p>
+                                <p class="text-sm font-medium text-gray-500">Base Econômica Tradicional</p>
+                                <p class="text-lg font-bold text-[#8C6A5D]">Agropecuária e Pecuária</p>
                                 <p class="text-xs text-gray-500">Bovinos, Caprinos, Milho, Feijão</p>
                             </div>
                         </div>
@@ -313,41 +311,43 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
                 <div class="card p-6">
                     <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🎉 Principais Festas</h3>
+                        <h3 class="font-bold text-xl mb-4">🎉 Calendário Cívico e Religioso</h3>
                         <ul class="space-y-3 text-gray-700">
-                            <li><strong>Festa de Santo Antônio:</strong> De 3 a 13 de Junho, a maior celebração religiosa, com novenas e quermesses.</li>
-                            <li><strong>Semana do Município:</strong> Em torno de 16 de Setembro, comemora a emancipação com desfiles cívicos e shows.</li>
-                            <li><strong>Cariré Junino:</strong> Importante festival de quadrilhas que valoriza as tradições nordestinas.</li>
+                            <li><strong>Festa do Padroeiro (Santo Antônio):</strong> De 3 a 13 de Junho. É a maior festa religiosa, mesclando o sagrado (missas, novenas) e o profano (quermesses, leilões).</li>
+                            <li><strong>Emancipação Política:</strong> 16 de Setembro. Comemorada com a "Semana do Município", com desfiles e eventos culturais.</li>
+                            <li><strong>Cariré Junino:</strong> Festival de quadrilhas que reforça as tradições nordestinas, coincidindo com a festa do padroeiro.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card p-6">
                     <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🏛️ Patrimônio e Símbolos</h3>
+                        <h3 class="font-bold text-xl mb-4">🏛️ Patrimônio Material e Imaterial</h3>
                         <ul class="space-y-3 text-gray-700">
                             <li><strong>Igreja Matriz de Santo Antônio:</strong> De 1956, marco da cidade com sua torre de 31m.</li>
-                            <li><strong>Museu Euclides Rufino:</strong> Acervo com mais de 8 mil peças da história local.</li>
+                            <li><strong>Igreja de São Francisco:</strong> Templo do final do século XIX, marco do período fundacional.</li>
+                            <li><strong>Museu Euclides Rufino Rodrigues:</strong> Acervo com mais de 8 mil peças da história local.</li>
                              <li><strong>Artesanato:</strong> Riqueza em trabalhos com palha, crochê e redes artesanais.</li>
-                            <li><strong>Bandeira:</strong> Faixas verticais em azul e branco, com o brasão de armas ao centro.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card p-6">
                     <div class="card-content">
-                        <h3 class="font-bold text-xl mb-4">🎵 Hino Municipal</h3>
+                        <h3 class="font-bold text-xl mb-4">🎵 Símbolos Cívicos</h3>
                         <div class="mb-4">
-                            <p class="text-sm text-gray-600"><strong>Letra:</strong> Valdelice de Castro Carneiro</p>
-                            <p class="text-sm text-gray-600"><strong>Música:</strong> Maestro Zezinho</p>
+                            <p class="text-sm text-gray-600"><strong>Bandeira:</strong> Três faixas verticais (azul, branco, azul) com o brasão ao centro.</p>
                         </div>
                         <details>
-                            <summary class="text-gray-600 italic">"Em planície de brancas areias..." <span class="text-sm font-medium text-[#8C6A5D]">(clique para ler)</span></summary>
-                            <blockquote class="mt-4 border-l-4 border-[#8C6A5D] pl-4 text-sm text-gray-600 space-y-2">
-                                <p>"Em planície de brancas areias,<br>neste ardente sertão nordestino,<br>Por um belo porvir tu anseias,<br>Cariré, tens um nobre destino."</p>
-                                <p class="font-bold">ESTRIBILHO:<br>"Cariré, nossa terra querida,<br>De teus filhos recebe o louvor.<br>São acordes, impulso de vida<br>Sinfonia, civismo e amor."</p>
-                                <p>"De firmeza são marco: teus passos,<br>do progresso fecunda semente;<br>Alargando da vida os espaços,<br>está sempre o teu filho presente."</p>
-                                <p>"Tantos vultos ilustres geraste.<br>Em teu seio fermento de vida;<br>P'ra vitória teu povo guiaste.<br>Cariré, nossa terra querida."</p>
-                                <p>"Para longe de nós o torpor,<br>que impede o raiar da vitória.<br>De tua gente terás o amor,<br>fulgurante será tua história."</p>
-                            </blockquote>
+                            <summary class="font-medium text-[#8C6A5D]">Análise e Letra do Hino <span class="text-sm">(clique para expandir)</span></summary>
+                            <div class="mt-3 pt-3 border-t">
+                                <p class="text-sm text-gray-700 mb-3">A letra revela referências diretas à geografia ("ardente sertão nordestino"), à história de luta pela autonomia ("De firmeza são marco: teus passos") e aos valores cívicos da população ("civismo e amor").</p>
+                                <blockquote class="text-sm text-gray-600 space-y-2">
+                                    <p>"Em planície de brancas areias,<br>neste ardente sertão nordestino,<br>Por um belo porvir tu anseias,<br>Cariré, tens um nobre destino."</p>
+                                    <p class="font-bold">ESTRIBILHO:<br>"Cariré, nossa terra querida,<br>De teus filhos recebe o louvor.<br>São acordes, impulso de vida<br>Sinfonia, civismo e amor."</p>
+                                    <p>"De firmeza são marco: teus passos,<br>do progresso fecunda semente;<br>Alargando da vida os espaços,<br>está sempre o teu filho presente."</p>
+                                    <p>"Tantos vultos ilustres geraste.<br>Em teu seio fermento de vida;<br>P'ra vitória teu povo guiaste.<br>Cariré, nossa terra querida."</p>
+                                    <p>"Para longe de nós o torpor,<br>que impede o raiar da vitória.<br>De tua gente terás o amor,<br>fulgurante será tua história."</p>
+                                </blockquote>
+                            </div>
                         </details>
                     </div>
                 </div>
@@ -366,15 +366,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const timelineData = [
                 {
-                    year: '1893',
-                    title: 'Chegada da Ferrovia',
-                    description: 'A inauguração da estação ferroviária em <strong>1 de novembro</strong>, pela Rede de Viação Cearense, é o marco zero da fundação do núcleo urbano de Cariré.',
-                    icon: '🚂'
-                },
-                {
                     year: '1911',
                     title: 'Criação do Distrito',
-                    description: 'Cariré é oficialmente reconhecido na divisão administrativa do Brasil, mas ainda como um distrito subordinado ao município de Sobral.',
+                    description: 'Cariré figura oficialmente pela primeira vez na divisão administrativa do Brasil, mas ainda como um distrito subordinado ao município de Sobral.',
                     icon: '🗺️'
                 },
                 {

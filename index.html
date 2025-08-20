@@ -98,6 +98,9 @@
                 transform: none;
             }
         }
+        .brasao-destaque {
+            filter: brightness(95%) grayscale(5%); /* Filtro sutil para harmonizar */
+        }
     </style>
 </head>
 <body>
@@ -127,7 +130,7 @@
         <section id="o-municipio" class="mb-24 scroll-mt-24">
             <div class="text-center mb-12">
                 <div class="icon-container flex justify-center mb-6 hover:scale-105 transition-transform duration-300">
-                    <img src="brasao_carire.png" alt="Brasão de Cariré" class="w-32 h-32 md:w-48 md:h-48 shadow-lg">
+                    <img src="brasao_carire.png" alt="Brasão de Cariré" class="w-32 h-32 md:w-48 md:h-48 shadow-lg brasao-destaque">
                 </div>
                 <h2 class="text-5xl font-extrabold text-[#3D352E] font-serif mb-4">Conheça Cariré para sua Prova</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Tudo o que você precisa saber sobre o município de Cariré para o seu concurso, com dados, história e leis organizadas de forma didática.</p>
@@ -577,17 +580,15 @@
             let isPomodoroRunning = false;
 
             // Carrega os dados dos arquivos JSON
-            Promise.all([
-                fetch('flashcards.json').then(response => response.json()),
-                fetch('quizzes.json').then(response => response.json())
-            ]).then(data => {
-                flashcards = data[0];
-                quizQuestions = data[1];
-                renderTools();
-            }).catch(error => {
-                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos flashcards.json e quizzes.json existem e estão na pasta correta.</p>`;
-                console.error('Erro ao carregar arquivos JSON:', error);
-            });
+            fetch('quizzes.json')
+                .then(response => response.json())
+                .then(data => {
+                    quizQuestions = data;
+                    renderTools();
+                }).catch(error => {
+                    toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se o arquivo quizzes.json existe e está na pasta correta.</p>`;
+                    console.error('Erro ao carregar arquivo JSON:', error);
+                });
 
 
             const toolsContainer = document.getElementById('tools-container');

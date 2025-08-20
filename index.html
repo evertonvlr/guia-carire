@@ -576,6 +576,7 @@
             let pomodoroInterval;
             let isPomodoroRunning = false;
 
+            // Carrega os dados dos arquivos JSON
             fetch('flashcards.json')
                 .then(response => response.json())
                 .then(data => {

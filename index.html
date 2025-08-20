@@ -116,6 +116,7 @@
                         <a href="#o-municipio" class="nav-link text-sm font-medium">O Município</a>
                         <a href="#ferramentas" class="nav-link text-sm font-medium">Ferramentas de Estudo</a>
                         <a href="#historia" class="nav-link text-sm font-medium">História</a>
+                        <a href="#geografia" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Geografia</a>
                         <a href="#governo" class="nav-link text-sm font-medium">Governo</a>
                         <a href="#economia" class="nav-link text-sm font-medium">Economia</a>
                         <a href="#cultura" class="nav-link text-sm font-medium">Cultura & Turismo</a>
@@ -176,31 +177,7 @@
             <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
             <div id="tools-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
-                        <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
-                        <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
-                    </div>
                 </div>
-                <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
-                        <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
-                        <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
-                    </div>
-                </div>
-                <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
-                        <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
-                        <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section id="historia" class="mb-24 scroll-mt-24">
@@ -231,6 +208,51 @@
                 <div class="absolute line h-full"></div>
                 <div id="timeline-container" class="space-y-12">
                     </div>
+            </div>
+        </section>
+
+        <section id="geografia" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">A Paisagem do Sertão</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">A identidade de Cariré é profundamente moldada por sua geografia. Inserido no semiárido nordestino, o município possui características únicas de clima, relevo e hidrografia, que definem o modo de vida e a cultura local.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">Ficha Geográfica</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Clima:</span><span>Tropical Quente Semiárido (BSh)</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Vegetação:</span><span>Caatinga Arbustiva Aberta e Floresta Caducifólia Espinhosa</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Bacia Hidrográfica:</span><span>Rio Acaraú</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Relevo:</span><span>Depressão Sertaneja</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Altitude:</span><span>149 metros</span></li>
+                            <li class="flex items-start"><span class="font-bold w-32 flex-shrink-0">Coordenadas:</span><span>3°57'03" S, 40°28'22" O</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-center">Municípios Limítrofes</h3>
+                        <div class="grid grid-cols-3 grid-rows-3 gap-2 text-center font-medium h-full">
+                            <div class="col-start-2 row-start-1 p-2 bg-gray-100 rounded flex items-center justify-center">Sobral</div>
+                            <div class="col-start-1 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Mucambo & Pacujá</div>
+                            <div class="col-start-2 row-start-2 p-3 bg-[#8C6A5D] text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">CARIRÉ</div>
+                            <div class="col-start-3 row-start-2 p-2 bg-gray-100 rounded flex items-center justify-center">Groaíras & Santa Quitéria</div>
+                            <div class="col-start-2 row-start-3 p-2 bg-gray-100 rounded flex items-center justify-center">Reriutaba & Varjota</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4">Divisão Administrativa</h3>
+                        <p class="text-gray-700 mb-4">O município é dividido em 5 distritos, que auxiliam na gestão do vasto território.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cariré (Sede)</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Arariús</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Cacimbas</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Jucá</div>
+                            <div class="bg-gray-50 p-3 rounded-lg font-medium">Tapuio</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -829,9 +851,6 @@
                 backBtn.addEventListener('click', renderTools);
             }
             
-            // Inicia as ferramentas ao carregar a página
-            renderTools();
-
             // Lógica para a navegação
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');

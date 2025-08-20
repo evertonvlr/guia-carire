@@ -176,31 +176,7 @@
             <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
             <div id="tools-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
-                        <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
-                        <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
-                    </div>
                 </div>
-                <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
-                        <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
-                        <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
-                    </div>
-                </div>
-                <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="card-content">
-                        <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
-                        <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
-                        <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
-                        <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section id="historia" class="mb-24 scroll-mt-24">
@@ -571,6 +547,8 @@
             // Lógica para as Ferramentas de Estudo
             let flashcards = [];
             let quizQuestions = [];
+            let flashcardsLoaded = false;
+            let quizzesLoaded = false;
             let flashcardIndex = 0;
             let flashcardShowingFront = true;
             let quizIndex = 0;
@@ -579,20 +557,26 @@
             let pomodoroInterval;
             let isPomodoroRunning = false;
 
-            // Carrega os dados dos arquivos JSON
-            Promise.all([
-                fetch('flashcards.json').then(response => response.json()),
-                fetch('quizzes.json').then(response => response.json())
-            ]).then(data => {
-                flashcards = data[0];
-                quizQuestions = data[1];
-                renderTools();
-            }).catch(error => {
-                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos flashcards.json e quizzes.json existem e estão na pasta correta.</p>`;
-                console.error('Erro ao carregar arquivos JSON:', error);
-            });
-
             const toolsContainer = document.getElementById('tools-container');
+
+            // Carrega os dados dos arquivos JSON
+            fetch('flashcards.json')
+                .then(response => response.json())
+                .then(data => {
+                    flashcards = data;
+                    flashcardsLoaded = true;
+                }).catch(error => {
+                    console.error('Erro ao carregar flashcards.json:', error);
+                });
+            
+            fetch('quizzes.json')
+                .then(response => response.json())
+                .then(data => {
+                    quizQuestions = data;
+                    quizzesLoaded = true;
+                }).catch(error => {
+                    console.error('Erro ao carregar quizzes.json:', error);
+                });
 
             function renderTools() {
                 toolsContainer.innerHTML = `
@@ -601,7 +585,7 @@
                             <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
                             <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
                             <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
-                            <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
+                            <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!flashcardsLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!flashcardsLoaded ? 'disabled' : ''}>${flashcardsLoaded ? 'Iniciar Flashcards' : 'Carregando...'}</button>
                         </div>
                     </div>
                     <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
@@ -609,7 +593,7 @@
                             <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
                             <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
                             <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
-                            <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
+                            <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!quizzesLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!quizzesLoaded ? 'disabled' : ''}>${quizzesLoaded ? 'Fazer Simulado' : 'Carregando...'}</button>
                         </div>
                     </div>
                     <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
@@ -622,15 +606,26 @@
                     </div>
                 `;
                 
-                document.getElementById('start-flashcard').addEventListener('click', startFlashcard);
-                document.getElementById('start-quiz').addEventListener('click', startQuiz);
+                if (flashcardsLoaded) {
+                    document.getElementById('start-flashcard').addEventListener('click', startFlashcard);
+                }
+                if (quizzesLoaded) {
+                    document.getElementById('start-quiz').addEventListener('click', startQuiz);
+                }
                 document.getElementById('start-pomodoro').addEventListener('click', startPomodoro);
             }
+
+            // Monitora o carregamento dos arquivos e renderiza as ferramentas
+            setInterval(() => {
+                if (flashcardsLoaded || quizzesLoaded) {
+                    renderTools();
+                }
+            }, 500);
 
             // Flashcards
             function startFlashcard() {
                 if (flashcards.length === 0) {
-                    alert('Carregando flashcards...');
+                    alert('Nenhum flashcard encontrado. Adicione perguntas ao arquivo flashcards.json.');
                     return;
                 }
                 flashcardIndex = 0;
@@ -680,7 +675,7 @@
             // Quiz
             function startQuiz() {
                 if (quizQuestions.length === 0) {
-                    alert('Carregando simulado...');
+                    alert('Nenhum simulado encontrado. Adicione perguntas ao arquivo quizzes.json.');
                     return;
                 }
                 quizIndex = 0;
@@ -816,10 +811,7 @@
                 });
                 backBtn.addEventListener('click', renderTools);
             }
-
-            // Inicia as ferramentas ao carregar a página
-            renderTools();
-
+            
             // Lógica para a navegação
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');

@@ -100,7 +100,7 @@
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
     <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -127,7 +127,7 @@
         <section id="o-municipio" class="mb-24 scroll-mt-24">
             <div class="text-center mb-12">
                 <div class="icon-container flex justify-center mb-6 hover:scale-105 transition-transform duration-300">
-                    <img src="brasao_carire.png" alt="Brasão de Cariré" class="w-32 h-32 md:w-48 md:h-48 rounded-full shadow-lg">
+                    <img src="brasao_carire.png" alt="Brasão de Cariré" class="w-32 h-32 md:w-48 md:h-48 shadow-lg">
                 </div>
                 <h2 class="text-5xl font-extrabold text-[#3D352E] font-serif mb-4">Conheça Cariré para sua Prova</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">Tudo o que você precisa saber sobre o município de Cariré para o seu concurso, com dados, história e leis organizadas de forma didática.</p>
@@ -172,7 +172,7 @@
         <section id="ferramentas" class="mb-24 scroll-mt-24">
             <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div id="tools-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
                     <div class="card-content">
                         <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
@@ -566,53 +566,8 @@
             new Chart(pibChartCtx, pibConfig);
 
             // Lógica para as Ferramentas de Estudo
-            const flashcards = [
-                {
-                    pergunta: "Qual é a data da primeira emancipação de Cariré?",
-                    resposta: "16 de setembro de 1929."
-                },
-                {
-                    pergunta: "Quais etnias indígenas habitavam as terras de Cariré?",
-                    resposta: "Tupinambás e Areriús."
-                },
-                {
-                    pergunta: "Qual é a área territorial do município?",
-                    resposta: "756,9 km²."
-                },
-                {
-                    pergunta: "Quem chefia o Poder Executivo municipal?",
-                    resposta: "O Prefeito."
-                },
-                {
-                    pergunta: "Qual é o principal motor econômico de Cariré?",
-                    resposta: "A administração pública."
-                }
-            ];
-
-            const quizQuestions = [
-                {
-                    pergunta: "Em que ano a Estrada de Ferro de Sobral inaugurou a estação em Cariré?",
-                    opcoes: ["1889", "1893", "1911", "1929"],
-                    respostaCorreta: "1893"
-                },
-                {
-                    pergunta: "A Lei Orgânica de Cariré determina que a administração municipal siga qual princípio?",
-                    opcoes: ["Imparcialidade", "Inovação", "Moralidade", "Exclusividade"],
-                    respostaCorreta: "Moralidade"
-                },
-                {
-                    pergunta: "Qual é a principal bacia hidrográfica de Cariré?",
-                    opcoes: ["Rio Jaguaribe", "Rio Curu", "Rio Acaraú", "Rio Parnaíba"],
-                    respostaCorreta: "Rio Acaraú"
-                },
-                {
-                    pergunta: "Quantos vereadores compõem a Câmara Municipal de Cariré?",
-                    opcoes: ["9", "11", "13", "15"],
-                    respostaCorreta: "11"
-                }
-            ];
-
-            // Variáveis de estado
+            let flashcards = [];
+            let quizQuestions = [];
             let flashcardIndex = 0;
             let flashcardShowingFront = true;
             let quizIndex = 0;
@@ -621,49 +576,109 @@
             let pomodoroInterval;
             let isPomodoroRunning = false;
 
-            // Flashcards
-            const flashcardTool = document.getElementById('flashcard-tool');
-            const startFlashcardBtn = document.getElementById('start-flashcard');
+            fetch('flashcards.json')
+                .then(response => response.json())
+                .then(data => {
+                    flashcards = data;
+                });
 
-            startFlashcardBtn.addEventListener('click', () => {
+            fetch('quizzes.json')
+                .then(response => response.json())
+                .then(data => {
+                    quizQuestions = data;
+                });
+
+            const toolsContainer = document.getElementById('tools-container');
+
+            function renderTools() {
+                toolsContainer.innerHTML = `
+                    <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                        <div class="card-content">
+                            <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
+                            <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
+                            <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
+                            <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
+                        </div>
+                    </div>
+                    <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                        <div class="card-content">
+                            <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
+                            <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
+                            <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
+                            <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
+                        </div>
+                    </div>
+                    <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                        <div class="card-content">
+                            <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
+                            <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
+                            <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
+                            <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('start-flashcard').addEventListener('click', startFlashcard);
+                document.getElementById('start-quiz').addEventListener('click', startQuiz);
+                document.getElementById('start-pomodoro').addEventListener('click', startPomodoro);
+            }
+
+            // Flashcards
+            function startFlashcard() {
+                if (flashcards.length === 0) {
+                    alert('Carregando flashcards...');
+                    return;
+                }
+                flashcardIndex = 0;
+                flashcardShowingFront = true;
+                const flashcardTool = document.getElementById('flashcard-tool');
                 flashcardTool.innerHTML = `
                     <div class="card-content flex flex-col justify-center items-center h-full">
-                        <div id="flashcard-content" class="text-xl font-bold text-[#3D352E] transition-transform duration-500 transform-gpu">
+                        <div id="flashcard-content" class="text-xl font-bold text-[#3D352E] transition-transform duration-500 transform-gpu cursor-pointer">
                             ${flashcards[0].pergunta}
                         </div>
-                        <button id="next-flashcard" class="mt-8 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Próximo</button>
+                        <div class="mt-8">
+                          <button id="prev-flashcard" class="px-6 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition-colors">Anterior</button>
+                          <button id="next-flashcard" class="px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Próximo</button>
+                          <button id="back-to-tools" class="mt-4 md:mt-0 px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Voltar</button>
+                        </div>
                     </div>
                 `;
                 const flashcardContent = document.getElementById('flashcard-content');
                 const nextFlashcardBtn = document.getElementById('next-flashcard');
-                
+                const prevFlashcardBtn = document.getElementById('prev-flashcard');
+                const backBtn = document.getElementById('back-to-tools');
+
                 flashcardContent.addEventListener('click', () => {
                     if (flashcardShowingFront) {
-                        flashcardContent.textContent = flashcards[flashcardIndex].resposta;
+                        flashcardContent.innerHTML = flashcards[flashcardIndex].resposta;
                     } else {
-                        flashcardContent.textContent = flashcards[flashcardIndex].pergunta;
+                        flashcardContent.innerHTML = flashcards[flashcardIndex].pergunta;
                     }
                     flashcardShowingFront = !flashcardShowingFront;
-                    flashcardContent.classList.toggle('rotate-y-180');
                 });
 
                 nextFlashcardBtn.addEventListener('click', () => {
                     flashcardIndex = (flashcardIndex + 1) % flashcards.length;
                     flashcardShowingFront = true;
-                    flashcardContent.textContent = flashcards[flashcardIndex].pergunta;
-                    flashcardContent.classList.remove('rotate-y-180');
+                    flashcardContent.innerHTML = flashcards[flashcardIndex].pergunta;
                 });
-            });
+                
+                prevFlashcardBtn.addEventListener('click', () => {
+                    flashcardIndex = (flashcardIndex - 1 + flashcards.length) % flashcards.length;
+                    flashcardShowingFront = true;
+                    flashcardContent.innerHTML = flashcards[flashcardIndex].pergunta;
+                });
+
+                backBtn.addEventListener('click', renderTools);
+            }
 
             // Quiz
-            const quizTool = document.getElementById('quiz-tool');
-            const startQuizBtn = document.getElementById('start-quiz');
-
-            startQuizBtn.addEventListener('click', () => {
-                startQuiz();
-            });
-
             function startQuiz() {
+                if (quizQuestions.length === 0) {
+                    alert('Carregando simulado...');
+                    return;
+                }
                 quizIndex = 0;
                 quizScore = 0;
                 displayQuizQuestion();
@@ -676,6 +691,7 @@
                     optionsHtml += `<button class="quiz-option block w-full text-left p-3 my-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">${option}</button>`;
                 });
 
+                const quizTool = document.getElementById('quiz-tool');
                 quizTool.innerHTML = `
                     <div class="card-content flex flex-col justify-center items-center h-full text-left">
                         <h4 class="text-lg font-bold mb-4">${currentQuestion.pergunta}</h4>
@@ -683,26 +699,38 @@
                             ${optionsHtml}
                         </div>
                         <div id="quiz-feedback" class="mt-4 font-semibold"></div>
+                        <button id="back-to-tools" class="mt-8 px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Voltar</button>
                     </div>
                 `;
+                document.getElementById('back-to-tools').addEventListener('click', renderTools);
 
                 document.querySelectorAll('.quiz-option').forEach(button => {
                     button.addEventListener('click', () => {
-                        checkQuizAnswer(button.textContent);
+                        checkQuizAnswer(button);
                     });
                 });
             }
 
-            function checkQuizAnswer(selectedOption) {
+            function checkQuizAnswer(button) {
                 const currentQuestion = quizQuestions[quizIndex];
                 const feedback = document.getElementById('quiz-feedback');
-                if (selectedOption === currentQuestion.respostaCorreta) {
+                
+                document.querySelectorAll('.quiz-option').forEach(btn => btn.disabled = true);
+                
+                if (button.textContent === currentQuestion.respostaCorreta) {
                     quizScore++;
                     feedback.textContent = "Correto!";
                     feedback.style.color = 'green';
+                    button.style.backgroundColor = '#a1b497';
                 } else {
                     feedback.textContent = `Errado. A resposta correta era: ${currentQuestion.respostaCorreta}`;
                     feedback.style.color = 'red';
+                    button.style.backgroundColor = '#fca5a5';
+                    document.querySelectorAll('.quiz-option').forEach(btn => {
+                        if (btn.textContent === currentQuestion.respostaCorreta) {
+                            btn.style.backgroundColor = '#a1b497';
+                        }
+                    });
                 }
 
                 setTimeout(() => {
@@ -712,25 +740,26 @@
                     } else {
                         showQuizResult();
                     }
-                }, 2000);
+                }, 3000);
             }
 
             function showQuizResult() {
+                const quizTool = document.getElementById('quiz-tool');
                 quizTool.innerHTML = `
                     <div class="card-content flex flex-col justify-center items-center h-full">
                         <h4 class="text-2xl font-bold mb-4">Quiz Concluído!</h4>
                         <p class="text-xl">Você acertou <span class="text-[#8C6A5D] font-bold">${quizScore}</span> de <span class="text-[#8C6A5D] font-bold">${quizQuestions.length}</span> perguntas.</p>
                         <button id="restart-quiz" class="mt-8 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Refazer Simulado</button>
+                        <button id="back-to-tools-quiz" class="mt-4 px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Voltar</button>
                     </div>
                 `;
                 document.getElementById('restart-quiz').addEventListener('click', startQuiz);
+                document.getElementById('back-to-tools-quiz').addEventListener('click', renderTools);
             }
 
             // Pomodoro
-            const pomodoroTool = document.getElementById('pomodoro-tool');
-            const startPomodoroBtn = document.getElementById('start-pomodoro');
-
-            startPomodoroBtn.addEventListener('click', () => {
+            function startPomodoro() {
+                const pomodoroTool = document.getElementById('pomodoro-tool');
                 pomodoroTool.innerHTML = `
                     <div class="card-content flex flex-col justify-center items-center h-full">
                         <div id="pomodoro-display" class="text-6xl font-bold mb-4">25:00</div>
@@ -738,11 +767,17 @@
                             <button id="toggle-pomodoro" class="px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar</button>
                             <button id="reset-pomodoro" class="px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Zerar</button>
                         </div>
+                        <button id="back-to-tools" class="mt-8 px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Voltar</button>
                     </div>
                 `;
                 const display = document.getElementById('pomodoro-display');
                 const toggleBtn = document.getElementById('toggle-pomodoro');
                 const resetBtn = document.getElementById('reset-pomodoro');
+                const backBtn = document.getElementById('back-to-tools');
+                
+                let pomodoroTimer = 25 * 60; // 25 minutos
+                let isPomodoroRunning = false;
+                let pomodoroInterval;
 
                 toggleBtn.addEventListener('click', () => {
                     if (isPomodoroRunning) {
@@ -775,7 +810,11 @@
                     display.textContent = '25:00';
                     toggleBtn.textContent = 'Iniciar';
                 });
-            });
+                backBtn.addEventListener('click', renderTools);
+            }
+
+            // Inicia as ferramentas ao carregar a página
+            renderTools();
 
             // Lógica para a navegação
             const sections = document.querySelectorAll('section');
@@ -805,6 +844,5 @@
             });
         });
     </script>
-
 </body>
 </html>

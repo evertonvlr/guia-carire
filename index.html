@@ -99,7 +99,7 @@
             }
         }
         .brasao-destaque {
-            filter: brightness(95%) grayscale(5%); /* Filtro sutil para harmonizar */
+            filter: brightness(95%) grayscale(5%);
         }
     </style>
 </head>
@@ -580,16 +580,17 @@
             let isPomodoroRunning = false;
 
             // Carrega os dados dos arquivos JSON
-            fetch('quizzes.json')
-                .then(response => response.json())
-                .then(data => {
-                    quizQuestions = data;
-                    renderTools();
-                }).catch(error => {
-                    toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se o arquivo quizzes.json existe e está na pasta correta.</p>`;
-                    console.error('Erro ao carregar arquivo JSON:', error);
-                });
-
+            Promise.all([
+                fetch('flashcards.json').then(response => response.json()),
+                fetch('quizzes.json').then(response => response.json())
+            ]).then(data => {
+                flashcards = data[0];
+                quizQuestions = data[1];
+                renderTools();
+            }).catch(error => {
+                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos flashcards.json e quizzes.json existem e estão na pasta correta.</p>`;
+                console.error('Erro ao carregar arquivos JSON:', error);
+            });
 
             const toolsContainer = document.getElementById('tools-container');
 

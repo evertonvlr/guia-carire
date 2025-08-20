@@ -570,7 +570,7 @@
                 quizzesLoaded = quizQuestions.length > 0;
                 renderTools();
             }).catch(error => {
-                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos JSON existem e estão na pasta correta.</p>`;
+                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos flashcards.json e quizzes.json existem e estão na pasta correta.</p>`;
                 console.error('Erro ao carregar arquivos JSON:', error);
             });
 

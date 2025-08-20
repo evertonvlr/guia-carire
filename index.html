@@ -176,7 +176,31 @@
             <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
             <div id="tools-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
+                        <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
+                        <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
+                    </div>
                 </div>
+                <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
+                        <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
+                        <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
+                    </div>
+                </div>
+                <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
+                        <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
+                        <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="historia" class="mb-24 scroll-mt-24">
@@ -560,22 +584,44 @@
             const toolsContainer = document.getElementById('tools-container');
 
             // Carrega os dados dos arquivos JSON
+            // Se flashcards.json não existir, o flashcardsLoaded continuará como false.
             fetch('flashcards.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return null;
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    flashcards = data;
-                    flashcardsLoaded = true;
-                }).catch(error => {
+                    if (data) {
+                        flashcards = data;
+                        flashcardsLoaded = true;
+                    }
+                })
+                .catch(error => {
                     console.error('Erro ao carregar flashcards.json:', error);
-                });
-            
-            fetch('quizzes.json')
-                .then(response => response.json())
-                .then(data => {
-                    quizQuestions = data;
-                    quizzesLoaded = true;
-                }).catch(error => {
-                    console.error('Erro ao carregar quizzes.json:', error);
+                })
+                .finally(() => {
+                    // Após a tentativa de carregar flashcards, tenta carregar o quiz
+                    fetch('quizzes.json')
+                        .then(response => {
+                            if (!response.ok) {
+                                return null;
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data) {
+                                quizQuestions = data;
+                                quizzesLoaded = true;
+                            }
+                            // Renderiza as ferramentas após ambas as tentativas
+                            renderTools();
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar quizzes.json:', error);
+                            renderTools(); // Renderiza mesmo com erro para exibir a mensagem
+                        });
                 });
 
             function renderTools() {
@@ -585,7 +631,7 @@
                             <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
                             <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
                             <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
-                            <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!flashcardsLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!flashcardsLoaded ? 'disabled' : ''}>${flashcardsLoaded ? 'Iniciar Flashcards' : 'Carregando...'}</button>
+                            <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!flashcardsLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!flashcardsLoaded ? 'disabled' : ''}>${flashcardsLoaded ? 'Iniciar Flashcards' : 'Arquivo flashcards.json não encontrado'}</button>
                         </div>
                     </div>
                     <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
@@ -593,7 +639,7 @@
                             <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
                             <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
                             <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
-                            <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!quizzesLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!quizzesLoaded ? 'disabled' : ''}>${quizzesLoaded ? 'Fazer Simulado' : 'Carregando...'}</button>
+                            <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors ${!quizzesLoaded ? 'bg-gray-400 cursor-not-allowed' : ''}" ${!quizzesLoaded ? 'disabled' : ''}>${quizzesLoaded ? 'Fazer Simulado' : 'Arquivo quizzes.json não encontrado'}</button>
                         </div>
                     </div>
                     <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
@@ -614,20 +660,9 @@
                 }
                 document.getElementById('start-pomodoro').addEventListener('click', startPomodoro);
             }
-
-            // Monitora o carregamento dos arquivos e renderiza as ferramentas
-            setInterval(() => {
-                if (flashcardsLoaded || quizzesLoaded) {
-                    renderTools();
-                }
-            }, 500);
-
+            
             // Flashcards
             function startFlashcard() {
-                if (flashcards.length === 0) {
-                    alert('Nenhum flashcard encontrado. Adicione perguntas ao arquivo flashcards.json.');
-                    return;
-                }
                 flashcardIndex = 0;
                 flashcardShowingFront = true;
                 const flashcardTool = document.getElementById('flashcard-tool');

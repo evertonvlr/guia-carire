@@ -577,17 +577,18 @@
             let isPomodoroRunning = false;
 
             // Carrega os dados dos arquivos JSON
-            fetch('flashcards.json')
-                .then(response => response.json())
-                .then(data => {
-                    flashcards = data;
-                });
+            Promise.all([
+                fetch('flashcards.json').then(response => response.json()),
+                fetch('quizzes.json').then(response => response.json())
+            ]).then(data => {
+                flashcards = data[0];
+                quizQuestions = data[1];
+                renderTools();
+            }).catch(error => {
+                toolsContainer.innerHTML = `<p class="text-center text-red-500 font-semibold">Erro ao carregar as ferramentas de estudo. Verifique se os arquivos flashcards.json e quizzes.json existem e estão na pasta correta.</p>`;
+                console.error('Erro ao carregar arquivos JSON:', error);
+            });
 
-            fetch('quizzes.json')
-                .then(response => response.json())
-                .then(data => {
-                    quizQuestions = data;
-                });
 
             const toolsContainer = document.getElementById('tools-container');
 

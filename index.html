@@ -148,17 +148,17 @@
                 <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
                     <div class="card-content">
                         <div class="icon mx-auto mb-4"><i class="fas fa-users"></i></div>
-                        <h3 class="font-bold text-lg mb-2">População Estimada</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">18.075</p>
-                        <p class="text-sm text-gray-500">(Estimativa 2024)</p>
+                        <h3 class="font-bold text-lg mb-2">População</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">17.632</p>
+                        <p class="text-sm text-gray-500">(Censo IBGE 2022)</p>
                     </div>
                 </div>
                 <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
                     <div class="card-content">
                         <div class="icon mx-auto mb-4"><i class="fas fa-globe-americas"></i></div>
                         <h3 class="font-bold text-lg mb-2">Área Territorial</h3>
-                        <p class="text-2xl font-bold text-[#8C6A5D]">756,9 km²</p>
-                        <p class="text-sm text-gray-500">(IBGE)</p>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">755,597 km²</p>
+                        <p class="text-sm text-gray-500">(Censo IBGE 2022)</p>
                     </div>
                 </div>
                 <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
@@ -176,7 +176,31 @@
             <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
             <div id="tools-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
+                        <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
+                        <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
+                    </div>
                 </div>
+                <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
+                        <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
+                        <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
+                    </div>
+                </div>
+                <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
+                        <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
+                        <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="historia" class="mb-24 scroll-mt-24">
@@ -805,6 +829,9 @@
                 backBtn.addEventListener('click', renderTools);
             }
             
+            // Inicia as ferramentas ao carregar a página
+            renderTools();
+
             // Lógica para a navegação
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');

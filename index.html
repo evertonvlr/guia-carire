@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Cariré - Ferramenta de Estudo para Concursos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F2;
+            color: #3D352E;
+        }
+        .nav-link {
+            transition: color 0.3s, transform 0.3s;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #8C6A5D;
+            transform: translateY(-2px);
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .icon {
+            color: #8C6A5D;
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background-color: #8c6a5d1a;
+            font-size: 2rem;
+        }
+        .timeline-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .timeline-item.active .timeline-item-content {
+            max-height: 500px;
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: sweep .5s ease-in-out;
+        }
+        @keyframes sweep {
+            0%   {opacity: 0; transform: translateY(-10px)}
+            100% {opacity: 1; transform: translateY(0)}
+        }
+        .line {
+            width: 4px;
+            background-color: #DDC9B4;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        @media (max-width: 768px) {
+            .line {
+                left: 1.5rem;
+                transform: translateX(0);
+            }
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .timeline-item .card-container {
+                width: 100%;
+                padding-left: 2rem;
+            }
+            .timeline-item .circle-icon {
+                left: 0;
+                transform: none;
+            }
+            .timeline-item .year {
+                left: 0.5rem;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold text-[#3D352E]">Guia de Estudo Cariré</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex items-baseline space-x-6">
+                        <a href="#o-municipio" class="nav-link text-sm font-medium">O Município</a>
+                        <a href="#ferramentas" class="nav-link text-sm font-medium">Ferramentas de Estudo</a>
+                        <a href="#historia" class="nav-link text-sm font-medium">História</a>
+                        <a href="#governo" class="nav-link text-sm font-medium">Governo</a>
+                        <a href="#economia" class="nav-link text-sm font-medium">Economia</a>
+                        <a href="#cultura" class="nav-link text-sm font-medium">Cultura & Turismo</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <section id="o-municipio" class="mb-24 scroll-mt-24">
+            <div class="text-center mb-12">
+                <div class="icon-container flex justify-center mb-6 hover:scale-105 transition-transform duration-300">
+                    <img src="brasao_carire.png" alt="Brasão de Cariré" class="w-32 h-32 md:w-48 md:h-48 rounded-full shadow-lg">
+                </div>
+                <h2 class="text-5xl font-extrabold text-[#3D352E] font-serif mb-4">Conheça Cariré para sua Prova</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Tudo o que você precisa saber sobre o município de Cariré para o seu concurso, com dados, história e leis organizadas de forma didática.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-calendar-alt"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Fundação</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">16/09/1929</p>
+                        <p class="text-sm text-gray-500">(Primeira Emancipação)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-users"></i></div>
+                        <h3 class="font-bold text-lg mb-2">População Estimada</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">18.075</p>
+                        <p class="text-sm text-gray-500">(Estimativa 2024)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-globe-americas"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Área Territorial</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">756,9 km²</p>
+                        <p class="text-sm text-gray-500">(IBGE)</p>
+                    </div>
+                </div>
+                <div class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-map-pin"></i></div>
+                        <h3 class="font-bold text-lg mb-2">Gentílico</h3>
+                        <p class="text-2xl font-bold text-[#8C6A5D]">Carireense</p>
+                        <p class="text-sm text-gray-500">(Lei Municipal)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ferramentas" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Ferramentas de Estudo</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Otimize sua preparação para o concurso com recursos interativos e práticos.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="flashcard-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-spell-check"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Flashcards Interativos</h3>
+                        <p class="text-gray-700">Teste seus conhecimentos sobre a história, geografia e governo de Cariré de forma rápida e divertida.</p>
+                        <button id="start-flashcard" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Flashcards</button>
+                    </div>
+                </div>
+                <div id="quiz-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-question-circle"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Simulados e Quizzes</h3>
+                        <p class="text-gray-700">Simule questões de prova baseadas nos tópicos da Lei Orgânica e outras informações do município.</p>
+                        <button id="start-quiz" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Fazer Simulado</button>
+                    </div>
+                </div>
+                <div id="pomodoro-tool" class="card p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="card-content">
+                        <div class="icon mx-auto mb-4"><i class="fas fa-clock"></i></div>
+                        <h3 class="font-bold text-xl mb-2">Cronômetro de Estudo</h3>
+                        <p class="text-gray-700">Use a técnica Pomodoro para gerenciar seu tempo de estudo de forma eficiente e focada.</p>
+                        <button id="start-pomodoro" class="mt-4 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar Cronômetro</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historia" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Trajetória Histórica</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">A trajetória de Cariré, desde suas origens em terras indígenas até se tornar um município autônomo, foi marcada por avanços e recuos. Explore os marcos decisivos abaixo.</p>
+             
+            <div class="card p-8 mb-12">
+                <h3 class="font-bold text-2xl mb-4">Origens Primordiais e a Gênese Ferroviária</h3>
+                <p class="text-gray-700 mb-3">As terras às margens do rio Acaraú eram habitadas por diversas etnias indígenas, como os **Tupinambás** e **Areriús**.</p>
+                <p class="text-gray-700 mb-4">Com a expansão da Estrada de Ferro de Sobral-Camocim a partir de 1893, foi construída uma estação de trem no então distrito de Sobral, o que consolidou o núcleo urbano que hoje é Cariré. A inauguração da estação em **1º de novembro de 1893** impulsionou o desenvolvimento do arraial, influenciando a formação do futuro município.</p>
+                <details class="bg-gray-50 rounded-lg p-4">
+                    <summary class="font-medium text-[#8C6A5D] flex items-center justify-between">
+                        <span>Origem do Nome (Toponímia)</span>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300 transform"></i>
+                    </summary>
+                    <div class="mt-3 space-y-2 text-sm text-gray-600 border-t pt-3">
+                        <p>A denominação de Cariré tem duas possíveis origens no tupi:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>Junção de `CARI` (peixe cascudo) com `RÉ` (diferente), significando "pseudo-cari" ou "peixe diferente".</li>
+                            <li>Combinação de `CAI` (queimada) com `RIRÉ` (depois), com o significado de "terra que fica depois da zona da mata".</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <div class="relative w-full max-w-4xl mx-auto">
+                <h3 class="text-3xl font-bold mb-8 text-center">Caminho para a Autonomia</h3>
+                <div class="absolute line h-full"></div>
+                <div id="timeline-container" class="space-y-12">
+                    </div>
+            </div>
+        </section>
+
+        <section id="governo" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Organização Municipal e Estrutura Legal</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">A administração municipal é dividida entre os poderes Executivo e Legislativo, que trabalham para gerir a cidade, criar leis e fiscalizar o uso dos recursos públicos.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mb-8">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">🏛️ Poder Executivo</h3>
+                        <p class="text-gray-600 mb-4">Chefiado pelo Prefeito, responsável pela administração direta da cidade e implementação de políticas públicas.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm font-medium text-gray-500">Prefeito (2025-2028)</p>
+                            <p class="text-lg font-bold">Antonio Rufino Martins (PDT)</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Sede</p>
+                            <p class="text-md">Praça Elísio Aguiar, nº 141, Centro</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">⚖️ Poder Legislativo</h3>
+                        <p class="text-gray-600 mb-4">Representado pela Câmara Municipal, que legisla e fiscaliza o executivo.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm font-medium text-gray-500">Composição</p>
+                            <p class="text-lg font-bold">11 Vereadores</p>
+                            <p class="text-sm font-medium text-gray-500 mt-2">Presidente da Câmara (2025)</p>
+                            <p class="text-md font-semibold">Luciana Miranda (PDT)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-6 mb-8">
+                <div class="card-content">
+                    <details>
+                        <summary class="font-bold text-xl mb-4 cursor-pointer flex items-center justify-between">
+                            <span>📜 A Lei Orgânica do Município de Cariré</span>
+                            <i class="fas fa-chevron-down text-sm transition-transform duration-300 transform"></i>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-gray-200 text-gray-700 space-y-4">
+                            <p class="font-semibold text-[#3D352E]">O que é a Lei Orgânica?</p>
+                            <p>A Lei Orgânica n° 01/2012, promulgada em 10 de dezembro de 2012, funciona como a "constituição municipal", definindo a estrutura e as competências dos poderes locais. Ela garante a autonomia política do município, sempre em harmonia com as Constituições Federal e Estadual.</p>
+                            
+                            <p class="font-semibold text-[#3D352E]">Princípios e Deveres Fundamentais</p>
+                            <ul class="list-disc list-inside space-y-2 text-sm">
+                                <li>O documento assegura a promoção da justiça social e a participação de todos na riqueza e prosperidade.</li>
+                                <li>Defende a igualdade e combate qualquer forma de discriminação com base em cor, origem, crença religiosa, deficiência ou classe social.</li>
+                                <li>Determina o respeito à legalidade, à moralidade e à probidade administrativa na gestão pública.</li>
+                                <li>Prevê a defesa e proteção do patrimônio histórico, cultural, artístico e do meio ambiente.</li>
+                            </ul>
+                            
+                            <p class="font-semibold text-[#3D352E]">Organização do Governo e Fiscalização</p>
+                            <ul class="list-disc list-inside space-y-2 text-sm">
+                                <li>O Governo Municipal é exercido pelos Poderes Executivo e Legislativo, que são independentes e harmônicos entre si. </li>
+                                <li>Compete à Câmara Municipal fiscalizar as contas do Poder Executivo, que devem ser enviadas anualmente para apreciação e julgamento do Tribunal de Contas dos Municípios do Estado do Ceará.</li>
+                                <li>Qualquer cidadão, partido político ou associação pode denunciar irregularidades ou ilegalidades na gestão ao Tribunal de Contas.</li>
+                                <li>A Lei determina que as contas anuais sejam apresentadas à Câmara até o dia 31 de janeiro, ficando à disposição de qualquer contribuinte para exame por 60 dias. </li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <details>
+                    <summary class="font-bold text-xl flex items-center justify-between">
+                        <span>Cronologia de Prefeitos</span>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300 transform"></i>
+                    </summary>
+                    <div class="mt-4 pt-4 border-t">
+                        <ul class="space-y-2 text-gray-700 text-sm columns-1 md:columns-2 lg:columns-3">
+                            <li><strong>Elísio Aguiar</strong> (1935-1945)</li>
+                            <li><strong>José Teles de Andrade</strong> (1945)</li>
+                            <li><strong>Otacílio de Azevedo</strong> (1945-1947)</li>
+                            <li><strong>José Teles de Andrade</strong> (1947-1951)</li>
+                            <li><strong>Francisco de Assis Pires</strong> (1951-1955)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1955-1959)</li>
+                            <li><strong>José Veras de Araújo</strong> (1959-1963)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1963-1967)</li>
+                            <li><strong>José Veras de Araújo</strong> (1967-1971)</li>
+                            <li><strong>Francisco de Assis Pires</strong> (1971-1973)</li>
+                            <li><strong>João de Castro Carneiro</strong> (1973-1977)</li>
+                            <li><strong>José Veras de Araújo</strong> (1977-1983)</li>
+                            <li><strong>Antônio de Assis Pires</strong> (1983-1988)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (1989-1992)</li>
+                            <li><strong>Antônio de Assis Pires</strong> (1993-1996)</li>
+                            <li><strong>Francisco Itamar de Sá</strong> (1997-2004)</li>
+                            <li><strong>Antônio Rufino Martins</strong> (2005-2012)</li>
+                            <li><strong>Elmo Aguiar</strong> (2013-2020)</li>
+                            <li><strong>Antônio Martins</strong> (2021-2024)</li>
+                            <li><strong>Antonio Rufino Martins</strong> (2025-2028)</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section id="economia" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Dimensões Econômicas e Sociais</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">A economia de Cariré é sustentada principalmente pela administração pública e pela agropecuária. O gráfico abaixo ilustra a composição do Produto Interno Bruto (PIB), revelando o peso de cada setor na geração de riqueza do município.</p>
+            <div class="card p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">Perfil Econômico</h3>
+                        <p class="text-gray-600 mb-4">A análise detalhada do PIB (total de R$ 193,1 milhões) mostra que a **administração pública é o principal motor econômico**, representando a maior fatia da renda que circula na cidade. A agropecuária é o segundo pilar, sendo a principal atividade produtiva do setor privado.</p>
+                        <div class="space-y-3">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500">PIB per capita (2021)</p>
+                                <p class="text-2xl font-bold text-[#8C6A5D]">R$ 10.500</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500">Base Econômica Tradicional</p>
+                                <p class="text-lg font-bold text-[#8C6A5D]">Agropecuária e Pecuária</p>
+                                <p class="text-xs text-gray-500">Bovinos, Caprinos, Milho, Feijão</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="pibChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cultura" class="mb-24 scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Cultura, Fé e Tradição</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">A identidade carireense é expressa em suas festas, em seu patrimônio histórico e em seu artesanato. Conheça os símbolos e as manifestações que mantêm viva a alma do município.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">🎉 Calendário Cívico e Religioso</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li><strong>Festa do Padroeiro (Santo Antônio):</strong> De 3 a 13 de Junho. É a maior festa religiosa, mesclando o sagrado (missas, novenas) e o profano (quermesses, leilões).</li>
+                            <li><strong>Emancipação Política:</strong> 16 de Setembro. Comemorada com a "Semana do Município", com desfiles e eventos culturais.</li>
+                            <li><strong>Cariré Junino:</strong> Festival de quadrilhas que reforça as tradições nordestinas, coincidindo com a festa do padroeiro.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">🏛️ Patrimônio Material e Imaterial</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li><strong>Igreja Matriz de Santo Antônio:</strong> De 1956, marco da cidade com sua torre de 31m.</li>
+                            <li><strong>Igreja de São Francisco:</strong> Templo do final do século XIX, marco do período fundacional.</li>
+                            <li><strong>Museu Euclides Rufino Rodrigues:</strong> Acervo com mais de 8 mil peças da história local.</li>
+                            <li><strong>Artesanato:</strong> Riqueza em trabalhos com palha, crochê e redes artesanais.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]">🎵 Símbolos Cívicos</h3>
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600"><strong>Bandeira:</strong> Três faixas verticais (azul, branco, azul) com o brasão ao centro.</p>
+                        </div>
+                        <details>
+                            <summary class="font-medium text-[#8C6A5D] flex items-center justify-between">
+                                <span>Análise e Letra do Hino</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300 transform"></i>
+                            </summary>
+                            <div class="mt-3 pt-3 border-t">
+                                <p class="text-sm text-gray-700 mb-3">A letra revela referências diretas à geografia ("ardente sertão nordestino"), à história de luta pela autonomia ("De firmeza são marco: teus passos") e aos valores cívicos da população ("civismo e amor").</p>
+                                <blockquote class="text-sm text-gray-600 space-y-2">
+                                    <p>"Em planície de brancas areias,<br>neste ardente sertão nordestino,<br>Por um belo porvir tu anseias,<br>Cariré, tens um nobre destino."</p>
+                                    <p class="font-bold">ESTRIBILHO:<br>"Cariré, nossa terra querida,<br>De teus filhos recebe o louvor.<br>São acordes, impulso de vida<br>Sinfonia, civismo e amor."</p>
+                                    <p>"De firmeza são marco: teus passos,<br>do progresso fecunda semente;<br>Alargando da vida os espaços,<br>está sempre o teu filho presente."</p>
+                                    <p>"Tantos vultos ilustres geraste.<br>Em teu seio fermento de vida;<br>P'ra vitória teu povo guiaste.<br>Cariré, nossa terra querida."</p>
+                                    <p>"Para longe de nós o torpor,<br>que impede o raiar da vitória.<br>De tua gente terás o amor,<br>fulgurante será tua história."</p>
+                                </blockquote>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="turismo" class="scroll-mt-24">
+            <h2 class="text-4xl font-bold mb-4 text-center">Atrativos e Pontos Turísticos</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Cariré oferece uma variedade de patrimônios históricos e locais de interesse que contam a história e a cultura da região.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]"><i class="fas fa-church mr-2"></i> Igreja Matriz de Santo Antônio</h3>
+                        <p class="text-gray-700">Construída em 1956, é um dos principais marcos da cidade. Com sua torre de 31 metros de altura, pode ser avistada de longe e ocupa quase 800m² de área coberta.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]"><i class="fas fa-mosque mr-2"></i> Igreja de São Francisco</h3>
+                        <p class="text-gray-700">Templo histórico do final do século XIX, que remonta ao período da fundação do município. É um marco importante que preserva a história religiosa de Cariré.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]"><i class="fas fa-university mr-2"></i> Museu Euclides Rufino Rodrigues</h3>
+                        <p class="text-gray-700">O primeiro museu de Cariré, com um acervo de mais de 8 mil peças. A coleção retrata os fatos históricos da cidade, desde o tempo da escravidão.</p>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <div class="card-content">
+                        <h3 class="font-bold text-2xl mb-4 text-[#3D352E]"><i class="fas fa-store mr-2"></i> Mercado Público</h3>
+                        <p class="text-gray-700">Ponto de encontro e comércio local, o Mercado Público de Cariré reflete a vida diária e a dinâmica social do município.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-white mt-12 py-8">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2024 Guia de Cariré. Todos os direitos reservados. Desenvolvido para fins de estudo e visualização de dados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para a Linha do Tempo (Timeline)
+            const timelineData = [
+                {
+                    year: '1911',
+                    title: 'Criação do Distrito',
+                    description: 'Cariré figura oficialmente pela primeira vez na divisão administrativa do Brasil, mas ainda como um distrito subordinado ao município de Sobral.',
+                    icon: '🗺️'
+                },
+                {
+                    year: '1929',
+                    title: 'Primeira Emancipação',
+                    description: 'Pela <strong>Lei Estadual nº 2.704</strong> de 16 de setembro, Cariré é elevado à categoria de vila e se torna um município autônomo. Esta data é celebrada hoje como o aniversário da cidade.',
+                    icon: '⭐'
+                },
+                {
+                    year: '1931',
+                    title: 'Município Extinto',
+                    description: 'Pelo <strong>Decreto Estadual nº 193</strong> de 20 de maio, o município é extinto e seu território é reanexado a Sobral, num período de centralização de poder no país.',
+                    icon: '🔙'
+                },
+                {
+                    year: '1935',
+                    title: 'Restauração Definitiva',
+                    description: 'A autonomia é finalmente reconquistada pelo <strong>Decreto Estadual nº 157</strong> de 23 de setembro. A instalação formal do município restaurado ocorre em 20 de outubro do mesmo ano.',
+                    icon: '🏛️'
+                }
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineData.forEach((item, index) => {
+                const isLeft = index % 2 === 0;
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item relative flex items-center ${isLeft ? 'justify-start' : 'justify-end'}`;
+                timelineItem.innerHTML = `
+                    <div class="card-container w-full md:w-5/12">
+                        <div class="card p-6 cursor-pointer">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg">${item.title}</h4>
+                                <div class="text-xl">${item.icon}</div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="text-sm text-gray-600 mt-2">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-1/2 transform -translate-x-1/2 w-16 h-16 bg-[#8C6A5D] rounded-full flex items-center justify-center text-white font-bold shadow-md text-sm z-10">${item.year}</div>
+                `;
+                timelineContainer.appendChild(timelineItem);
+            });
+
+            document.querySelectorAll('.timeline-item .card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const parentItem = card.closest('.timeline-item');
+                    parentItem.classList.toggle('active');
+                    const icon = card.querySelector('.fa-chevron-down');
+                    if (icon) {
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
+            });
+
+            // Lógica para o Gráfico de PIB
+            const pibData = {
+                labels: ['Admin. Pública', 'Agropecuária', 'Serviços (privados)', 'Indústria'],
+                datasets: [{
+                    label: 'Composição do PIB (%)',
+                    data: [43.3, 29.4, 22.9, 4.4],
+                    backgroundColor: [
+                        '#8C6A5D',
+                        '#A1B497',
+                        '#DDC9B4',
+                        '#B0A8B9'
+                    ],
+                    borderColor: '#F8F5F2',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+
+            const pibConfig = {
+                type: 'doughnut',
+                data: pibData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                },
+                                color: '#3D352E',
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            };
+            
+            const pibChartCtx = document.getElementById('pibChart').getContext('2d');
+            new Chart(pibChartCtx, pibConfig);
+
+            // Lógica para as Ferramentas de Estudo
+            const flashcards = [
+                {
+                    pergunta: "Qual é a data da primeira emancipação de Cariré?",
+                    resposta: "16 de setembro de 1929."
+                },
+                {
+                    pergunta: "Quais etnias indígenas habitavam as terras de Cariré?",
+                    resposta: "Tupinambás e Areriús."
+                },
+                {
+                    pergunta: "Qual é a área territorial do município?",
+                    resposta: "756,9 km²."
+                },
+                {
+                    pergunta: "Quem chefia o Poder Executivo municipal?",
+                    resposta: "O Prefeito."
+                },
+                {
+                    pergunta: "Qual é o principal motor econômico de Cariré?",
+                    resposta: "A administração pública."
+                }
+            ];
+
+            const quizQuestions = [
+                {
+                    pergunta: "Em que ano a Estrada de Ferro de Sobral inaugurou a estação em Cariré?",
+                    opcoes: ["1889", "1893", "1911", "1929"],
+                    respostaCorreta: "1893"
+                },
+                {
+                    pergunta: "A Lei Orgânica de Cariré determina que a administração municipal siga qual princípio?",
+                    opcoes: ["Imparcialidade", "Inovação", "Moralidade", "Exclusividade"],
+                    respostaCorreta: "Moralidade"
+                },
+                {
+                    pergunta: "Qual é a principal bacia hidrográfica de Cariré?",
+                    opcoes: ["Rio Jaguaribe", "Rio Curu", "Rio Acaraú", "Rio Parnaíba"],
+                    respostaCorreta: "Rio Acaraú"
+                },
+                {
+                    pergunta: "Quantos vereadores compõem a Câmara Municipal de Cariré?",
+                    opcoes: ["9", "11", "13", "15"],
+                    respostaCorreta: "11"
+                }
+            ];
+
+            // Variáveis de estado
+            let flashcardIndex = 0;
+            let flashcardShowingFront = true;
+            let quizIndex = 0;
+            let quizScore = 0;
+            let pomodoroTimer = 25 * 60; // 25 minutos
+            let pomodoroInterval;
+            let isPomodoroRunning = false;
+
+            // Flashcards
+            const flashcardTool = document.getElementById('flashcard-tool');
+            const startFlashcardBtn = document.getElementById('start-flashcard');
+
+            startFlashcardBtn.addEventListener('click', () => {
+                flashcardTool.innerHTML = `
+                    <div class="card-content flex flex-col justify-center items-center h-full">
+                        <div id="flashcard-content" class="text-xl font-bold text-[#3D352E] transition-transform duration-500 transform-gpu">
+                            ${flashcards[0].pergunta}
+                        </div>
+                        <button id="next-flashcard" class="mt-8 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Próximo</button>
+                    </div>
+                `;
+                const flashcardContent = document.getElementById('flashcard-content');
+                const nextFlashcardBtn = document.getElementById('next-flashcard');
+                
+                flashcardContent.addEventListener('click', () => {
+                    if (flashcardShowingFront) {
+                        flashcardContent.textContent = flashcards[flashcardIndex].resposta;
+                    } else {
+                        flashcardContent.textContent = flashcards[flashcardIndex].pergunta;
+                    }
+                    flashcardShowingFront = !flashcardShowingFront;
+                    flashcardContent.classList.toggle('rotate-y-180');
+                });
+
+                nextFlashcardBtn.addEventListener('click', () => {
+                    flashcardIndex = (flashcardIndex + 1) % flashcards.length;
+                    flashcardShowingFront = true;
+                    flashcardContent.textContent = flashcards[flashcardIndex].pergunta;
+                    flashcardContent.classList.remove('rotate-y-180');
+                });
+            });
+
+            // Quiz
+            const quizTool = document.getElementById('quiz-tool');
+            const startQuizBtn = document.getElementById('start-quiz');
+
+            startQuizBtn.addEventListener('click', () => {
+                startQuiz();
+            });
+
+            function startQuiz() {
+                quizIndex = 0;
+                quizScore = 0;
+                displayQuizQuestion();
+            }
+
+            function displayQuizQuestion() {
+                const currentQuestion = quizQuestions[quizIndex];
+                let optionsHtml = '';
+                currentQuestion.opcoes.forEach(option => {
+                    optionsHtml += `<button class="quiz-option block w-full text-left p-3 my-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">${option}</button>`;
+                });
+
+                quizTool.innerHTML = `
+                    <div class="card-content flex flex-col justify-center items-center h-full text-left">
+                        <h4 class="text-lg font-bold mb-4">${currentQuestion.pergunta}</h4>
+                        <div id="quiz-options" class="w-full">
+                            ${optionsHtml}
+                        </div>
+                        <div id="quiz-feedback" class="mt-4 font-semibold"></div>
+                    </div>
+                `;
+
+                document.querySelectorAll('.quiz-option').forEach(button => {
+                    button.addEventListener('click', () => {
+                        checkQuizAnswer(button.textContent);
+                    });
+                });
+            }
+
+            function checkQuizAnswer(selectedOption) {
+                const currentQuestion = quizQuestions[quizIndex];
+                const feedback = document.getElementById('quiz-feedback');
+                if (selectedOption === currentQuestion.respostaCorreta) {
+                    quizScore++;
+                    feedback.textContent = "Correto!";
+                    feedback.style.color = 'green';
+                } else {
+                    feedback.textContent = `Errado. A resposta correta era: ${currentQuestion.respostaCorreta}`;
+                    feedback.style.color = 'red';
+                }
+
+                setTimeout(() => {
+                    quizIndex++;
+                    if (quizIndex < quizQuestions.length) {
+                        displayQuizQuestion();
+                    } else {
+                        showQuizResult();
+                    }
+                }, 2000);
+            }
+
+            function showQuizResult() {
+                quizTool.innerHTML = `
+                    <div class="card-content flex flex-col justify-center items-center h-full">
+                        <h4 class="text-2xl font-bold mb-4">Quiz Concluído!</h4>
+                        <p class="text-xl">Você acertou <span class="text-[#8C6A5D] font-bold">${quizScore}</span> de <span class="text-[#8C6A5D] font-bold">${quizQuestions.length}</span> perguntas.</p>
+                        <button id="restart-quiz" class="mt-8 px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Refazer Simulado</button>
+                    </div>
+                `;
+                document.getElementById('restart-quiz').addEventListener('click', startQuiz);
+            }
+
+            // Pomodoro
+            const pomodoroTool = document.getElementById('pomodoro-tool');
+            const startPomodoroBtn = document.getElementById('start-pomodoro');
+
+            startPomodoroBtn.addEventListener('click', () => {
+                pomodoroTool.innerHTML = `
+                    <div class="card-content flex flex-col justify-center items-center h-full">
+                        <div id="pomodoro-display" class="text-6xl font-bold mb-4">25:00</div>
+                        <div class="flex space-x-4">
+                            <button id="toggle-pomodoro" class="px-6 py-2 bg-[#8C6A5D] text-white rounded-lg font-semibold hover:bg-[#a18174] transition-colors">Iniciar</button>
+                            <button id="reset-pomodoro" class="px-6 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors">Zerar</button>
+                        </div>
+                    </div>
+                `;
+                const display = document.getElementById('pomodoro-display');
+                const toggleBtn = document.getElementById('toggle-pomodoro');
+                const resetBtn = document.getElementById('reset-pomodoro');
+
+                toggleBtn.addEventListener('click', () => {
+                    if (isPomodoroRunning) {
+                        clearInterval(pomodoroInterval);
+                        isPomodoroRunning = false;
+                        toggleBtn.textContent = 'Continuar';
+                    } else {
+                        pomodoroInterval = setInterval(() => {
+                            pomodoroTimer--;
+                            const minutes = Math.floor(pomodoroTimer / 60);
+                            const seconds = pomodoroTimer % 60;
+                            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                            if (pomodoroTimer <= 0) {
+                                clearInterval(pomodoroInterval);
+                                isPomodoroRunning = false;
+                                display.textContent = 'Tempo Esgotado!';
+                                toggleBtn.textContent = 'Reiniciar';
+                                pomodoroTimer = 25 * 60;
+                            }
+                        }, 1000);
+                        isPomodoroRunning = true;
+                        toggleBtn.textContent = 'Pausar';
+                    }
+                });
+
+                resetBtn.addEventListener('click', () => {
+                    clearInterval(pomodoroInterval);
+                    isPomodoroRunning = false;
+                    pomodoroTimer = 25 * 60;
+                    display.textContent = '25:00';
+                    toggleBtn.textContent = 'Iniciar';
+                });
+            });
+
+            // Lógica para a navegação
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').includes(entry.target.id)) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>

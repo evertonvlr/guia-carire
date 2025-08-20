@@ -1,102 +1,201 @@
 [
-    {
-      "pergunta": "Qual é a data da primeira emancipação política de Cariré, que é celebrada como o aniversário da cidade?",
-      "opcoes": ["16 de setembro de 1929", "20 de outubro de 1935", "1º de novembro de 1893", "20 de maio de 1931"],
-      "respostaCorreta": "16 de setembro de 1929"
-    },
-    {
-      "pergunta": "Em que ano a Estrada de Ferro de Sobral inaugurou a estação em Cariré, impulsionando o desenvolvimento do arraial?",
-      "opcoes": ["1889", "1893", "1911", "1929"],
-      "respostaCorreta": "1893"
-    },
-    {
-      "pergunta": "De acordo com a Lei Orgânica, quais são os poderes do município de Cariré?",
-      "opcoes": ["Legislativo e Judiciário", "Executivo e Judiciário", "Executivo e Legislativo", "Federal, Estadual e Municipal"],
-      "respostaCorreta": "Executivo e Legislativo"
-    },
-    {
-      "pergunta": "Qual é o principal motor econômico do município, representando a maior fatia do PIB?",
-      "opcoes": ["Agropecuária", "Indústria", "Comércio e Serviços Privados", "Administração Pública"],
-      "respostaCorreta": "Administração Pública"
-    },
-    {
-      "pergunta": "A Lei Orgânica de Cariré determina que as contas anuais da prefeitura e da câmara devem ser apresentadas à Câmara até qual data?",
-      "opcoes": ["10 de abril", "31 de dezembro", "31 de janeiro", "30 de junho"],
-      "respostaCorreta": "31 de janeiro"
-    },
-    {
-      "pergunta": "Qual a principal bacia hidrográfica de Cariré?",
-      "opcoes": ["Rio Jaguaribe", "Rio Acaraú", "Rio Curu", "Rio Parnaíba"],
-      "respostaCorreta": "Rio Acaraú"
-    },
-    {
-      "pergunta": "O que a Lei Orgânica prevê sobre a realização de doações, isenções fiscais ou previdenciárias?",
-      "opcoes": ["Devem ser feitas sem autorização legislativa", "São proibidas em todos os casos", "São vetadas, salvo mediante autorização legislativa específica", "Podem ser concedidas por decreto do Prefeito"],
-      "respostaCorreta": "São vetadas, salvo mediante autorização legislativa específica"
-    },
-    {
-      "pergunta": "Em que ano a autonomia de Cariré foi definitivamente reconquistada, após ter sido extinto?",
-      "opcoes": ["1929", "1931", "1935", "1945"],
-      "respostaCorreta": "1935"
-    },
-    {
-      "pergunta": "Qual é a estimativa de população de Cariré em 2024?",
-      "opcoes": ["15.000", "17.500", "18.075", "20.000"],
-      "respostaCorreta": "18.075"
-    },
-    {
-      "pergunta": "O que é o 'Cariré Junino'?",
-      "opcoes": ["Um festival gastronômico", "O festival de quadrilhas da cidade", "Uma festa religiosa local", "O nome do principal time de futebol"],
-      "respostaCorreta": "O festival de quadrilhas da cidade"
-    },
-    {
-      "pergunta": "Qual é o nome do museu de Cariré, que possui um acervo sobre a história local?",
-      "opcoes": ["Museu Histórico de Sobral", "Museu da Imigração", "Museu Euclides Rufino Rodrigues", "Museu da Estação"],
-      "respostaCorreta": "Museu Euclides Rufino Rodrigues"
-    },
-    {
-      "pergunta": "A Lei Orgânica garante que a administração municipal obedeça aos princípios de moralidade, legalidade e qual outro princípio?",
-      "opcoes": ["Responsabilidade financeira", "Impessoalidade", "Transparência total", "Gestão democrática"],
-      "respostaCorreta": "Impessoalidade"
-    },
-    {
-      "pergunta": "Qual a vegetação predominante no município?",
-      "opcoes": ["Mata Atlântica", "Caatinga Arbustiva Aberta", "Cerrado", "Floresta Amazônica"],
-      "respostaCorreta": "Caatinga Arbustiva Aberta"
-    },
-    {
-      "pergunta": "O que a Lei Orgânica prevê para a remuneração dos servidores municipais?",
-      "opcoes": ["Valorização profissional", "Salário mínimo nacional", "Salário igual ao do Prefeito", "Adicionais de produtividade"],
-      "respostaCorreta": "Valorização profissional"
-    },
-    {
-      "pergunta": "Em que ano foi construída a Igreja Matriz de Santo Antônio?",
-      "opcoes": ["1929", "1956", "1893", "2012"],
-      "respostaCorreta": "1956"
-    },
-    {
-      "pergunta": "Qual é a altura da torre da Igreja Matriz de Santo Antônio?",
-      "opcoes": ["15 metros", "25 metros", "31 metros", "40 metros"],
-      "respostaCorreta": "31 metros"
-    },
-    {
-      "pergunta": "De acordo com a Lei Orgânica, a aprovação de um projeto de lei para mudar a própria Lei Orgânica exige o voto de quantos membros da Câmara?",
-      "opcoes": ["Maioria simples", "Maioria absoluta", "Dois terços", "Metade dos membros"],
-      "respostaCorreta": "Dois terços"
-    },
-    {
-      "pergunta": "Qual o ano da primeira extinção do município, que o reanexou a Sobral?",
-      "opcoes": ["1911", "1929", "1931", "1935"],
-      "respostaCorreta": "1931"
-    },
-    {
-      "pergunta": "O que a frase 'De firmeza são marco: teus passos' do hino municipal simboliza?",
-      "opcoes": ["O desenvolvimento industrial da cidade", "A beleza das paisagens naturais", "A luta pela autonomia do município", "A riqueza agrícola local"],
-      "respostaCorreta": "A luta pela autonomia do município"
-    },
-    {
-      "pergunta": "Qual o IDHM (Índice de Desenvolvimento Humano Municipal) de Cariré em 2010?",
-      "opcoes": ["0,450 (Baixo)", "0,596 (Médio)", "0,700 (Alto)", "0,850 (Muito Alto)"],
-      "respostaCorreta": "0,596 (Médio)"
-    }
+  {
+    "pergunta": "Qual é a data da primeira emancipação política de Cariré?",
+    "opcoes": ["16 de setembro de 1929", "20 de outubro de 1935", "1º de novembro de 1893", "20 de maio de 1931"],
+    "respostaCorreta": "16 de setembro de 1929"
+  },
+  {
+    "pergunta": "Em que ano a autonomia de Cariré foi definitivamente reconquistada, após ter sido extinto?",
+    "opcoes": ["1929", "1931", "1935", "1945"],
+    "respostaCorreta": "1935"
+  },
+  {
+    "pergunta": "Qual das seguintes etnias indígenas habitava as terras de Cariré antes de sua fundação?",
+    "opcoes": ["Tabajaras", "Potiguaras", "Tupinambás e Areriús", "Guanacés"],
+    "respostaCorreta": "Tupinambás e Areriús"
+  },
+  {
+    "pergunta": "O que impulsionou o desenvolvimento do núcleo urbano de Cariré a partir de 1893?",
+    "opcoes": ["A construção de uma ponte", "A inauguração de uma estação de trem", "O descobrimento de minérios", "A chegada de colonos europeus"],
+    "respostaCorreta": "A inauguração de uma estação de trem"
+  },
+  {
+    "pergunta": "Qual dos seguintes é um dos possíveis significados do nome 'Cariré'?",
+    "opcoes": ["'Rio grande'", "'Terra que fica depois da zona da mata'", "'Água cristalina'", "'Montanha alta'"],
+    "respostaCorreta": "'Terra que fica depois da zona da mata'"
+  },
+  {
+    "pergunta": "A Lei Orgânica de Cariré, promulgada em 2012, funciona como a:",
+    "opcoes": ["Lei de Diretrizes Orçamentárias", "Constituição do Estado", "Constituição Federal", "'Constituição municipal'"],
+    "respostaCorreta": "'Constituição municipal'"},
+  {
+    "pergunta": "Qual é o principal princípio que a Lei Orgânica garante para a administração pública de Cariré?",
+    "opcoes": ["Exclusividade", "Imparcialidade", "Inovação", "Legalidade, impessoalidade, moralidade"],
+    "respostaCorreta": "Legalidade, impessoalidade, moralidade"
+  },
+  {
+    "pergunta": "O poder municipal de Cariré é exercido por quais poderes?",
+    "opcoes": ["Executivo e Judiciário", "Judiciário e Legislativo", "Federal e Estadual", "Executivo e Legislativo"],
+    "respostaCorreta": "Executivo e Legislativo"
+  },
+  {
+    "pergunta": "A Lei Orgânica proíbe a atribuição de nomes de pessoas vivas a quais locais?",
+    "opcoes": ["Apenas a praças", "Apenas a ruas", "Apenas a edifícios públicos", "Ruas, praças, logradouros públicos e pontes"],
+    "respostaCorreta": "Ruas, praças, logradouros públicos e pontes"
+  },
+  {
+    "pergunta": "De acordo com a Lei Orgânica, as contas anuais da prefeitura devem ser apresentadas à Câmara até:",
+    "opcoes": ["10 de abril", "31 de janeiro", "30 de junho", "31 de dezembro"],
+    "respostaCorreta": "31 de janeiro"
+  },
+  {
+    "pergunta": "Qual é a estimativa de população de Cariré em 2024?",
+    "opcoes": ["15.000", "17.500", "18.075", "20.000"],
+    "respostaCorreta": "18.075"
+  },
+  {
+    "pergunta": "Qual é a área territorial de Cariré?",
+    "opcoes": ["500 km²", "756,9 km²", "900 km²", "1.020 km²"],
+    "respostaCorreta": "756,9 km²"
+  },
+  {
+    "pergunta": "Qual é o gentílico correto para os nascidos em Cariré?",
+    "opcoes": ["Carirense", "Caririense", "Carireense", "Cariranense"],
+    "respostaCorreta": "Carireense"
+  },
+  {
+    "pergunta": "O que a Lei Orgânica determina sobre as doações ou isenções fiscais?",
+    "opcoes": ["Devem ser feitas sem autorização legislativa", "São vetadas, salvo mediante autorização legislativa", "São proibidas em todos os casos", "Podem ser concedidas por decreto do Prefeito"],
+    "respostaCorreta": "São vetadas, salvo mediante autorização legislativa"
+  },
+  {
+    "pergunta": "O que a frase 'De firmeza são marco: teus passos' no hino municipal simboliza?",
+    "opcoes": ["A beleza das paisagens", "A luta pela autonomia do município", "A riqueza agrícola local", "O desenvolvimento industrial"],
+    "respostaCorreta": "A luta pela autonomia do município"
+  },
+  {
+    "pergunta": "De acordo com o site, qual é a principal festa religiosa de Cariré?",
+    "opcoes": ["Cariré Junino", "Festa do Padroeiro (Santo Antônio)", "Festa da Emancipação", "Festa de São Francisco"],
+    "respostaCorreta": "Festa do Padroeiro (Santo Antônio)"
+  },
+  {
+    "pergunta": "O que o Museu Euclides Rufino Rodrigues abriga?",
+    "opcoes": ["Uma coleção de arte moderna", "Documentos da Lei Orgânica", "Acervo sobre a história local", "Uma biblioteca pública"],
+    "respostaCorreta": "Acervo sobre a história local"
+  },
+  {
+    "pergunta": "Qual é a principal bacia hidrográfica de Cariré?",
+    "opcoes": ["Rio Jaguaribe", "Rio Parnaíba", "Rio Curu", "Rio Acaraú"],
+    "respostaCorreta": "Rio Acaraú"
+  },
+  {
+    "pergunta": "Qual dos seguintes municípios NÃO faz divisa com Cariré?",
+    "opcoes": ["Sobral", "Groaíras", "Fortaleza", "Reriutaba"],
+    "respostaCorreta": "Fortaleza"
+  },
+  {
+    "pergunta": "O PIB de Cariré mostra que, além da administração pública, qual é o segundo pilar econômico?",
+    "opcoes": ["Comércio", "Indústria", "Agropecuária", "Serviços"],
+    "respostaCorreta": "Agropecuária"
+  },
+  {
+    "pergunta": "Qual é o IDHM (Índice de Desenvolvimento Humano Municipal) de Cariré em 2010?",
+    "opcoes": ["0,450 (Baixo)", "0,596 (Médio)", "0,700 (Alto)", "0,850 (Muito Alto)"],
+    "respostaCorreta": "0,596 (Médio)"
+  },
+  {
+    "pergunta": "Em qual ano Cariré foi extinto como município e reanexado a Sobral?",
+    "opcoes": ["1929", "1931", "1935", "1940"],
+    "respostaCorreta": "1931"
+  },
+  {
+    "pergunta": "Quem foi o primeiro prefeito de Cariré, de acordo com a cronologia?",
+    "opcoes": ["João de Castro Carneiro", "José Teles de Andrade", "Francisco de Assis Pires", "Elísio Aguiar"],
+    "respostaCorreta": "Elísio Aguiar"
+  },
+  {
+    "pergunta": "Quantos distritos o município de Cariré possui, incluindo a sede?",
+    "opcoes": ["3", "4", "5", "6"],
+    "respostaCorreta": "5"
+  },
+  {
+    "pergunta": "A Lei Orgânica exige o voto de quantos vereadores para aprovar uma emenda à própria lei?",
+    "opcoes": ["Maioria simples", "Maioria absoluta", "Dois terços", "Três quartos"],
+    "respostaCorreta": "Dois terços"
+  },
+  {
+    "pergunta": "Qual a principal característica da Igreja Matriz de Santo Antônio, construída em 1956?",
+    "opcoes": ["Seu teto de vidro", "Sua torre de 31 metros", "Sua localização rural", "Sua fundação no século XIX"],
+    "respostaCorreta": "Sua torre de 31 metros"
+  },
+  {
+    "pergunta": "Em qual mesorregião e microrregião Cariré está localizado?",
+    "opcoes": ["Mesorregião do Nordeste Cearense, Microrregião de Fortaleza", "Mesorregião do Sertão Cearense, Microrregião de Baturité", "Mesorregião do Sertão Cearense, Microrregião de Sobral", "Mesorregião do Noroeste Cearense, Microrregião de Crateús"],
+    "respostaCorreta": "Mesorregião do Sertão Cearense, Microrregião de Sobral"
+  },
+  {
+    "pergunta": "O que a Lei Orgânica estabelece para o registro, vacinação e captura de animais?",
+    "opcoes": ["É de responsabilidade do governo estadual", "É proibido no perímetro urbano", "É de competência exclusiva da União", "É uma competência privativa do município"],
+    "respostaCorreta": "É uma competência privativa do município"
+  },
+  {
+    "pergunta": "Qual é o principal feriado cívico de Cariré, celebrado com a 'Semana do Município'?",
+    "opcoes": ["1º de novembro", "13 de junho", "16 de setembro", "20 de outubro"],
+    "respostaCorreta": "16 de setembro"
+  },
+  {
+    "pergunta": "Qual a principal atividade tradicional do setor econômico privado de Cariré?",
+    "opcoes": ["Agropecuária", "Mineração", "Têxtil", "Turismo"],
+    "respostaCorreta": "Agropecuária"
+  },
+  {
+    "pergunta": "A Lei Orgânica de Cariré prevê a remuneração condigna e valorização profissional para qual grupo?",
+    "opcoes": ["Prefeito e vereadores", "Apenas professores", "Servidores municipais", "Trabalhadores rurais"],
+    "respostaCorreta": "Servidores municipais"
+  },
+  {
+    "pergunta": "Quais são os principais trabalhos artesanais da cultura carireense?",
+    "opcoes": ["Cerâmica e madeira", "Metais e pedras preciosas", "Palha, crochê e redes", "Couro e barro"],
+    "respostaCorreta": "Palha, crochê e redes"
+  },
+  {
+    "pergunta": "A quem compete julgar as contas do Prefeito Municipal, após parecer prévio do órgão de controle externo?",
+    "opcoes": ["Ao Tribunal de Justiça do Estado", "À Câmara Municipal", "Ao Tribunal de Contas do Estado", "À Assembleia Legislativa"],
+    "respostaCorreta": "À Câmara Municipal"
+  },
+  {
+    "pergunta": "Qual dos seguintes elementos faz parte do brasão de Cariré?",
+    "opcoes": ["Uma cruz", "Uma espiga de milho", "Uma cabeça de boi", "Um navio"],
+    "respostaCorreta": "Uma cabeça de boi"
+  },
+  {
+    "pergunta": "A Lei Orgânica exige que as contas anuais fiquem à disposição de qualquer contribuinte para exame durante quantos dias?",
+    "opcoes": ["15 dias", "30 dias", "45 dias", "60 dias"],
+    "respostaCorreta": "60 dias"
+  },
+  {
+    "pergunta": "Qual a principal característica do relevo de Cariré?",
+    "opcoes": ["Planície litorânea", "Planalto", "Depressão Sertaneja", "Montanhas"],
+    "respostaCorreta": "Depressão Sertaneja"
+  },
+  {
+    "pergunta": "O que a Lei Orgânica estabelece para a criação de cargos, empregos ou funções na administração municipal?",
+    "opcoes": ["Pode ser feita por decreto", "Depende de autorização legislativa", "É de competência do Prefeito, sem aprovação", "É uma prática proibida"],
+    "respostaCorreta": "Depende de autorização legislativa"
+  },
+  {
+    "pergunta": "Qual é a principal referência religiosa e cultural de Cariré, além da Festa do Padroeiro?",
+    "opcoes": ["A Igreja de São Francisco", "O Mercado Público", "O Hino Municipal", "O Museu Euclides Rufino Rodrigues"],
+    "respostaCorreta": "A Igreja de São Francisco"
+  },
+  {
+    "pergunta": "O que a Lei Orgânica prevê para a remuneração do Vice-Prefeito?",
+    "opcoes": ["Deve ser igual à do Prefeito", "Não superior a dois terços da remuneração do Prefeito", "Não superior a metade da remuneração do Prefeito", "Não pode ser remunerado"],
+    "respostaCorreta": "Não superior a dois terços da remuneração do Prefeito"
+  },
+  {
+    "pergunta": "Qual é um dos objetivos do município, segundo a Lei Orgânica?",
+    "opcoes": ["Promover a imigração para o exterior", "Incentivar a produção agropecuária", "Construir fábricas de grande porte", "Promover a centralização do poder"],
+    "respostaCorreta": "Incentivar a produção agropecuária"
+  }
 ]
